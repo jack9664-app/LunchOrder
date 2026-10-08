@@ -1,0 +1,354 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LunchOrder v11｜Firebase 匿名讀取測試</title><style>.drinkcontrols{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}.drinkprefs{display:flex;gap:7px;flex-wrap:wrap}.drinkprefs label{font-size:12px;color:#65738b}.drinkprefs select{min-width:105px;padding:7px 8px;margin-top:3px}.drinkcontrols .qty{align-self:end}@media(max-width:680px){.dish:has(.drinkcontrols){align-items:stretch;flex-direction:column}.drinkcontrols{justify-content:space-between}}
+
+:root{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;color:#233047;background:#f5f7fb}*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:11px;padding:10px 16px;background:#3459db;color:#fff;font-weight:650}button:disabled{opacity:.45;cursor:not-allowed}.ghost{background:#edf1fb;color:#3459db}.danger{background:#fff0f0;color:#bb3030}.small{padding:6px 10px;font-size:13px}.wrap{max-width:1130px;margin:auto;padding:24px 18px 70px}.top{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}.brand{font-size:27px;font-weight:800;color:#253e9d}.muted{color:#728099;font-size:13px}.nav{display:flex;gap:8px;margin:22px 0;flex-wrap:wrap}.nav button{background:white;color:#4c5c79;border:1px solid #e2e8f3}.nav button.active{background:#3459db;color:white}.card{background:#fff;border:1px solid #e7ebf4;border-radius:18px;padding:21px;margin:14px 0;box-shadow:0 6px 22px #24385808}.card h2,.card h3{margin:0 0 15px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.between{justify-content:space-between}.field{display:flex;flex-direction:column;gap:6px;margin:9px 0;flex:1;min-width:180px}.field label{font-size:13px;color:#5e6c82;font-weight:650}input,select,textarea{width:100%;border:1px solid #dbe1ed;border-radius:10px;padding:10px 12px;background:white;color:#253047}textarea{min-height:65px;resize:vertical}.pill{display:inline-block;border-radius:30px;padding:5px 10px;background:#e7f7ee;color:#147347;font-size:12px;font-weight:750}.pill.off{background:#fff0e7;color:#a95418}.dish{display:flex;justify-content:space-between;gap:12px;align-items:center;border-top:1px solid #edf0f5;padding:14px 0}.dish:first-child{border:0}.qty{display:flex;align-items:center;gap:8px}.qty button{padding:5px 11px;background:#edf1fb;color:#3459db}.qty strong{min-width:20px;text-align:center}.money{font-weight:800;color:#294ac5}.notice{padding:12px 14px;border-radius:12px;background:#eff5ff;color:#38537c;margin:12px 0}.warn{background:#fff4e7;color:#915a1d}.kpi{background:#f5f7fd;padding:16px;border-radius:13px}.kpi b{font-size:24px;display:block;margin-top:6px}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:470px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid #edf0f5;vertical-align:top}th{color:#697790;font-size:13px}details{border:1px solid #e7ebf4;border-radius:12px;margin:10px 0;padding:12px}summary{cursor:pointer;font-weight:750}.bag{border:1px solid #e0e7f5;border-radius:13px;overflow:hidden;margin:12px 0}.bagtitle{background:#edf2ff;padding:12px 14px;font-weight:800}.bagEditor{padding:16px;background:#f8faff;border-top:1px solid #e0e7f5}.bagEditor h3{margin:0 0 12px}.bagline{display:grid;grid-template-columns:minmax(100px,32%) 1fr;gap:10px;padding:12px 14px;border-top:1px solid #e8edf7}.toggle{position:relative;width:56px;height:31px;border-radius:25px;background:#c4ccdc;display:inline-block;cursor:pointer;vertical-align:middle}.toggle.on{background:#29a875}.toggle:after{content:'';position:absolute;width:23px;height:23px;left:4px;top:4px;background:white;border-radius:50%;transition:.15s}.toggle.on:after{transform:translateX(25px)}.hide{display:none!important}.empty{text-align:center;padding:30px;color:#8090a7}.footer{font-size:12px;color:#7a8496;margin-top:30px}@media(max-width:680px){.grid,.three{grid-template-columns:1fr}.wrap{padding:15px 12px 50px}.card{padding:16px}.brand{font-size:23px}}
+
+.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.tag{font-size:12px;border-radius:8px;background:#eef2fc;color:#3459db;padding:5px 8px}.disabled{opacity:.6}.bagline span{line-height:1.8}.field.compact{min-width:110px}.bagEditor select{width:100%}.kpi b{font-variant-numeric:tabular-nums}
+</style><style>.hidden{display:none!important}#cloudView .cloud-wrap{max-width:100%;padding:0}#cloudView header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}#cloudView .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}#cloudView .between{justify-content:space-between}#cloudView .store{padding:14px;border:1px solid #dbe5f0;border-radius:12px;margin:12px 0}#cloudView .item{padding:12px 0;border-bottom:1px solid #dbe5f0}#cloudView .topgap{margin-top:18px}#cloudView .tag{font-size:12px}#cloudView .small{font-size:13px}#cloudView .bad{color:#b42318}#cloudView .ok{color:#147348}#cloudView .secondary{background:#e8eef6;color:#263a55}#cloudView button:disabled{opacity:.5}#cloudView .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}@media(max-width:650px){#cloudView .grid{grid-template-columns:1fr}}</style></head><body><main class="wrap"><div class="top"><div><div class="brand">🍱 LunchOrder <span class="tag">v15</span></div><div class="muted">便當店為主・飲料店選配・共用單位袋號</div></div><span id="statusBadge" class="pill"></span></div><div class="notice warn"><b>互動原型：</b>「一般訂購者」與「本機管理預覽」仍使用瀏覽器本機示範資料，不會送出真實訂單；「Firebase 雲端管理」已連接 Firestore；「雲端訂餐」可在開放訂餐時寫入真實訂單；請先發布配套安全規則。請勿把本機示範當作正式訂餐。</div><div class="nav"><button id="userTab" class="active" onclick="switchTab('user')">一般訂購者</button><button id="adminTab" onclick="switchTab('admin')">本機管理預覽</button><button id="cloudTab" onclick="switchTab('cloud')">☁ Firebase 雲端管理</button><button id="cloudUserTab" onclick="switchTab('cloudUser')">🛒 雲端訂餐</button></div><section id="userView"></section><section id="adminView" class="hide"></section><section id="cloudUserView" class="hide"><div class="card"><h2>🛒 Firebase 雲端訂餐</h2><div class="notice"><b>正式雲端測試：</b>訂單會寫入 Firestore；輸入相同單位名稱即可查詢本輪訂單，截止前可追加或取消單件餐點；不需使用原本送單的裝置。</div><div class="row between"><div id="cloudUserIdentity" class="muted">尚未驗證身分</div><div class="row"><button id="cloudAnonLogin">匿名登入並讀取</button><button id="cloudUserRefresh" class="ghost">重新讀取</button></div></div><div id="cloudUserStatus" class="notice">按「匿名登入並讀取」開始測試。</div></div><div id="cloudUserSession"></div><div id="cloudUserMenus"></div><div id="cloudOrderPanel"></div><div id="cloudMyOrders"></div></section><section id="cloudView" class="hide"><div class="cloud-wrap"><header><div><h1>🍱 LunchOrder <span class="tag">Firebase 雲端管理</span></h1><div class="muted">管理者登入・雲端店家與菜單測試</div></div><div class="row"><span id="identity" class="muted">尚未登入</span><button id="login">使用 Google 登入</button><button id="logout" class="secondary hidden">登出</button></div></header><div class="notice"><b>雲端管理區</b>：這是直接連接正式 Firebase 專案的管理功能測試。修改或新增資料會真的寫入 Firestore。訂餐、取消、截止與雲端分袋請至本輪雲端訂單管理操作；不會修改 左側本機示範訂單。</div><div class="card"><h2>連線狀態</h2><div id="status" role="status">正在初始化 Firebase…</div><div id="role" class="muted topgap"></div></div><main id="admin" class="hidden"><div class="card"><div class="row between"><h2>店家清單</h2><button id="refresh" class="secondary">↻ 重新讀取</button></div><div id="shops"></div></div><div class="card"><h2>新增店家</h2><form id="addShop" class="grid"><div><label for="newShopName">店家名稱</label><input id="newShopName" required maxlength="100" placeholder="例如：第二家便當店"></div><div><label for="newShopType">店家類型</label><select id="newShopType"><option value="bento">便當店</option><option value="drink">飲料店</option></select></div><div><label for="newShopSort">排序</label><input id="newShopSort" type="number" step="1" value="2" required></div><div style="align-self:end"><button type="submit">＋ 新增店家</button></div></form></div><div class="card"><h2>菜單管理</h2><div class="muted">先從上方店家清單選擇「管理菜單」，即可讀取、修改或新增該店餐點。</div><div id="menuArea" class="hidden"><div class="topgap"><b id="menuTitle"></b></div><div id="menuItems"></div><h2 class="topgap">新增餐點</h2><form id="addItem" class="grid"><div><label for="itemName">餐點名稱</label><input id="itemName" required maxlength="100"></div><div><label for="itemPrice">售價（元）</label><input id="itemPrice" type="number" min="0" step="1" required></div><div><label for="itemSort">排序</label><input id="itemSort" type="number" step="1" value="2" required></div><div style="align-self:end"><button type="submit">＋ 新增餐點</button></div></form></div></div></main><div id="cloudOrdersAdmin" class="hidden"></div><p class="muted">此測試頁只供授權管理者操作。若出現 permission-denied，請勿將 Firestore 改成測試模式或開放所有人讀寫。</p></section><div class="footer">LunchOrder v15・Firebase 雲端訂餐測試版・餐點圖片功能暫緩</div></main><script>
+const KEY='lunchorder_preview_2026_v7';
+const starter={restaurants:[{id:'b1',name:'幸福便當',type:'bento',dishes:[{id:'b11',name:'香酥雞腿飯',price:120},{id:'b12',name:'古早味排骨飯',price:110},{id:'b13',name:'蔬食便當',price:100}]},{id:'b2',name:'好味食堂',type:'bento',dishes:[{id:'b21',name:'鯖魚飯',price:115},{id:'b22',name:'烤雞腿飯',price:125}]},{id:'d1',name:'好喝飲料',type:'drink',dishes:[{id:'d11',name:'紅茶',price:30},{id:'d12',name:'奶茶',price:45},{id:'d13',name:'綠茶',price:30}]}],session:{bentoId:'b1',drinkId:'d1',bentoOpen:true,drinkOpen:false,bentoDeadline:'',drinkDeadline:'',sharedDeadline:'',orderingOpen:true,drinkEnabled:false,finalized:false,adminLabel:'訂餐管理員'},orders:[],bagMoves:[],drinkAssignments:{}};
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8),clone=x=>JSON.parse(JSON.stringify(x));
+let db;try{db=JSON.parse(localStorage.getItem(KEY))||clone(starter)}catch{db=clone(starter)};if(db.session.orderingOpen===undefined)db.session.orderingOpen=true;if(db.session.drinkEnabled===undefined)db.session.drinkEnabled=!!db.session.drinkOpen;if(db.session.sharedDeadline===undefined)db.session.sharedDeadline=db.session.bentoDeadline||db.session.drinkDeadline||'';db.session.bentoOpen=db.session.orderingOpen;db.session.drinkOpen=db.session.orderingOpen&&db.session.drinkEnabled;
+let reviewMode=false,tab='user',section='dashboard',editBag=null,editRid=null,qty={},adminQty={},selectedUnit='',draftNote='',lookupUnit='',drinkPrefs={},adminDrinkPrefs={};
+const save=()=>localStorage.setItem(KEY,JSON.stringify(db)),restaurant=id=>db.restaurants.find(r=>r.id===id),dish=id=>db.restaurants.flatMap(r=>r.dishes.map(d=>({...d,restaurantId:r.id,restaurantName:r.name,type:r.type}))).find(d=>d.id===String(id).split('::')[0]),isBento=id=>dish(id)?.type==='bento',total=items=>Object.values(items).reduce((a,v)=>a+Number(v||0),0),money=items=>Object.entries(items).reduce((a,[k,v])=>a+(dish(k)?.price||0)*v,0),itemsText=items=>Object.entries(items).filter(([,v])=>v>0).map(([k,v])=>`${itemName(k)} × ${v}`).join('、')||'無';
+const sugarOptions=['正常糖','少糖','半糖','微糖','無糖'],iceOptions=['正常冰','少冰','微冰','去冰'];
+const itemName=k=>{const d=dish(k),parts=String(k).split('::');return (d?.name||'已刪除')+(parts.length===3?'（'+parts[1]+'、'+parts[2]+'）':'')};
+const drinkKey=(id,admin=false)=>{const pref=(admin?adminDrinkPrefs:drinkPrefs)[id]||{};return id+'::'+(pref.sugar||'正常糖')+'::'+(pref.ice||'正常冰')};
+function drinkSelectors(d,admin=false){const pref=(admin?adminDrinkPrefs:drinkPrefs)[d.id]||{},map=admin?'adminDrinkPrefs':'drinkPrefs',countMap=admin?'adminQty':'qty',s=pref.sugar||'正常糖',i=pref.ice||'正常冰';const options=(values,chosen,field)=>`<select aria-label="${field==='sugar'?'甜度':'冰量'}" onchange="${map}['${d.id}']={...(${map}['${d.id}']||{}),${field}:this.value};${admin?'renderAdmin()':'renderUser()'}">${values.map(x=>`<option value="${x}" ${x===chosen?'selected':''}>${x}</option>`).join('')}</select>`;const currentKey=drinkKey(d.id,admin),entries=Object.entries(admin?adminQty:qty).filter(([k,v])=>k.startsWith(d.id+'::')&&v>0);return `<div class="drinkcontrols"><div class="drinkprefs"><label>甜度 ${options(sugarOptions,s,'sugar')}</label><label>冰量 ${options(iceOptions,i,'ice')}</label></div><div class="qty"><button onclick="changeQty('${currentKey}',-1,${admin})">−</button><strong>${(admin?adminQty:qty)[currentKey]||0}</strong><button onclick="changeQty('${currentKey}',1,${admin})">＋</button></div>${entries.length?`<div class="muted" style="width:100%;text-align:right">已選：${entries.map(([k,v])=>esc(itemName(k))+' × '+v).join('；')}</div>`:''}</div>`}
+const isOpen=type=>{let s=db.session;return !!s.orderingOpen&&(type==='bento'||s.drinkEnabled)&&(!s.sharedDeadline||Date.now()<=new Date(s.sharedDeadline).getTime())};
+const current=type=>restaurant(db.session[type==='bento'?'bentoId':'drinkId']);
+function effective(){const map=new Map();for(const o of db.orders){let u=map.get(o.unit);if(!u){u={unit:o.unit,first:o.ts,items:{},records:[]};map.set(o.unit,u)}u.records.push(o);for(const [k,v] of Object.entries(o.items))u.items[k]=Math.max(0,(u.items[k]||0)+v)}return [...map.values()].map(u=>({...u,bentoCount:Object.entries(u.items).filter(([k])=>isBento(k)).reduce((a,[,v])=>a+v,0),count:total(u.items),amount:money(u.items)})).filter(u=>u.count>0).sort((a,b)=>a.first-b.first)}
+function groups(){const units=effective(),bagMap=new Map(),put=(n,unit,k,q)=>{if(!q)return;let b=bagMap.get(n);if(!b){b=new Map();bagMap.set(n,b)}let items=b.get(unit);if(!items){items={};b.set(unit,items)}items[k]=(items[k]||0)+q};let next=3;for(const u of units){const b=u.unit===db.session.adminLabel?1:u.bentoCount===0?null:u.bentoCount<=3?2:next++;if(b!==null)for(const [k,q] of Object.entries(u.items))if(isBento(k))put(b,u.unit,k,q)}
+let warnings=[];for(const m of db.bagMoves){const src=bagMap.get(m.from)?.get(m.unit),available=src?.[m.dish]||0,n=Math.min(available,m.qty);if(n<m.qty)warnings.push(`${m.unit}：${dish(m.dish)?.name||m.dish} 原袋數量不足，異動已部分套用`);if(n){src[m.dish]-=n;put(m.to,m.unit,m.dish,n)}}
+const unassigned=[];for(const u of units){const positions=[...bagMap].filter(([,map])=>Object.values(map.get(u.unit)||{}).some(v=>v>0)).map(([n])=>n).sort((a,b)=>a-b);const drinkItems=Object.fromEntries(Object.entries(u.items).filter(([k,v])=>!isBento(k)&&v>0));if(!total(drinkItems))continue;let chosen=db.drinkAssignments[u.unit];if(!positions.length){if(chosen&&Number.isInteger(+chosen)&&+chosen>0)for(const [k,q] of Object.entries(drinkItems))put(+chosen,u.unit,k,q);else unassigned.push({unit:u.unit,items:drinkItems});continue}if(!positions.includes(+chosen))chosen=positions[0];for(const [k,q] of Object.entries(drinkItems))put(+chosen,u.unit,k,q)}
+return {bags:[...bagMap].map(([n,map])=>({n,units:[...map].map(([unit,items])=>({unit,items})).filter(x=>total(x.items)>0)})).filter(b=>b.units.length).sort((a,b)=>a.n-b.n),unassigned,warnings};}
+function switchTab(t){tab=t;render()}
+function render(){const s=db.session,open=isOpen('bento')||isOpen('drink');$('statusBadge').textContent=open?'目前有開放訂購的店家':'目前沒有開放訂購';$('statusBadge').className='pill'+(open?'':' off');$('userTab').classList.toggle('active',tab==='user');$('adminTab').classList.toggle('active',tab==='admin');$('cloudTab').classList.toggle('active',tab==='cloud');$('cloudUserTab').classList.toggle('active',tab==='cloudUser');$('userView').classList.toggle('hide',tab!=='user');$('adminView').classList.toggle('hide',tab!=='admin');$('cloudView').classList.toggle('hide',tab!=='cloud');$('cloudUserView').classList.toggle('hide',tab!=='cloudUser');renderUser();renderAdmin()}
+function renderUser(){if(reviewMode){renderReview();return;}const menus=['bento','drink'].filter(t=>db.session[t+'Open']).map(t=>{const r=current(t),opened=isOpen(t);return `<div class="card ${opened?'':'disabled'}"><div class="sectionhead"><div><h2 style="margin:0">${t==='bento'?'🍱 便當店':'🧋 飲料店'}｜${esc(r?.name||'未選擇')}</h2><div class="muted">${db.session.sharedDeadline?'統一截止：'+esc(new Date(db.session.sharedDeadline).toLocaleString('zh-TW')):'管理者手動截止'}</div></div><span class="pill ${opened?'':'off'}">${opened?'開放訂購':'已截止'}</span></div>${(r?.dishes||[]).map(d=>`<div class="dish"><div><b>${esc(d.name)}</b><div class="money">NT$ ${d.price}</div></div>${t==='drink'?(opened?drinkSelectors(d):'<span class="muted">已截止</span>'):`<div class="qty"><button onclick="changeQty('${d.id}',-1)" ${opened?'':'disabled'}>−</button><strong>${qty[d.id]||0}</strong><button onclick="changeQty('${d.id}',1)" ${opened?'':'disabled'}>＋</button></div>`}</div>`).join('')||'<div class="empty">尚未設定菜單</div>'}</div>`}).join('');$('userView').innerHTML=`<div class="card"><h2>今日訂餐</h2><div class="grid"><div class="field"><label>訂購單位／姓名（必填）</label><input id="unit" value="${esc(selectedUnit)}" placeholder="例如：航電組、王小明" oninput="selectedUnit=this.value"></div><div class="field"><label>備註（選填）</label><input id="note" value="${esc(draftNote)}" placeholder="" oninput="draftNote=this.value"></div></div><div class="muted">同一單位可一次訂便當和飲料；追加訂單請再次使用相同名稱。</div></div>${menus||'<div class="card empty">目前沒有開放訂購的店家</div>'}<div class="card"><div class="row between"><div><b>合計 ${total(qty)} 件</b><div class="money">NT$ ${money(qty)}</div></div><button onclick="openReview()" ${total(qty)?'':'disabled'}>查看訂購清單</button></div><div class="muted">送出前可檢查、調整數量及移除餐點；便當店與飲料店使用同一截止時間；送出時會再次檢查是否仍可訂購。</div></div><div class="card"><h2>查詢我的訂單</h2><p class="muted">請輸入下訂時的完整名稱／單位。此查詢不是身分驗證。</p><div class="row"><div class="field"><input id="lookup" value="${esc(lookupUnit)}" oninput="lookupUnit=this.value" placeholder="完整名稱／單位"></div><button onclick="lookupOrders()">查詢</button></div><div id="lookupResult"></div></div>`;if(lookupUnit.trim())lookupOrders(true)}
+function changeQty(k,n,admin=false){const obj=admin?adminQty:qty;obj[k]=Math.max(0,(obj[k]||0)+n);if(admin)renderAdmin();else renderUser()}
+function openReview(){
+  if(!selectedUnit.trim())return alert('請先填寫訂購單位／姓名');
+  if(!total(qty))return alert('請先選擇餐點');
+  reviewMode=true;renderUser();window.scrollTo({top:0,behavior:'smooth'});
+}
+function reviewAdjust(k,delta){qty[k]=Math.max(0,Number(qty[k]||0)+delta);renderReview()}
+function reviewRemove(k){delete qty[k];renderReview()}
+function renderReview(){
+  const entries=Object.entries(qty).filter(([,v])=>v>0);
+  const groups=['bento','drink'].map(type=>{
+    const rows=entries.filter(([k])=>dish(k)?.type===type);
+    if(!rows.length)return '';
+    return `<div class="card"><h2>${type==='bento'?'🍱 便當店':'🧋 飲料店'}</h2>${rows.map(([k,v])=>{
+      const d=dish(k),price=d?.price||0,encoded=encodeURIComponent(k);
+      return `<div class="dish" style="gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><b>${esc(itemName(k))}</b><div class="muted">${esc(d?.restaurantName||'')}・NT$ ${price} × ${v} = NT$ ${price*v}</div></div><div class="qty"><button onclick="reviewAdjust(decodeURIComponent('${encoded}'),-1)">−</button><strong>${v}</strong><button onclick="reviewAdjust(decodeURIComponent('${encoded}'),1)">＋</button></div><button class="danger small" onclick="reviewRemove(decodeURIComponent('${encoded}'))">移除</button></div>`;
+    }).join('')}</div>`;
+  }).join('');
+  $('userView').innerHTML=`<div class="card"><h2>送出前確認清單</h2><div class="notice">這裡的調整不會建立訂單或取消紀錄，確認無誤後才會正式送出。</div><p><b>訂購單位／姓名：</b>${esc(selectedUnit.trim())}</p><p><b>備註：</b>${draftNote.trim()?esc(draftNote):'（空白）'}</p></div>${groups||'<div class="card empty">目前沒有餐點，請返回選購。</div>'}<div class="card"><div class="row between"><div><b>合計 ${total(qty)} 件</b><div class="money">NT$ ${money(qty)}</div></div></div><div class="row" style="margin-top:16px;justify-content:space-between;gap:10px;flex-wrap:wrap"><button class="ghost" onclick="reviewMode=false;renderUser()">返回修改訂單</button><button onclick="submitOrder()" ${total(qty)?'':'disabled'}>確認送出訂單</button></div></div>`;
+}
+function submitOrder(){if(!reviewMode)return openReview();const unit=selectedUnit.trim(),items=Object.fromEntries(Object.entries(qty).filter(([,v])=>v>0));if(!unit)return alert('請填寫訂購單位／姓名');if(!total(items))return alert('請先選擇餐點');for(const k of Object.keys(items)){const d=dish(k);if(!d||!isOpen(d.type)||current(d.type)?.id!==d.restaurantId)return alert('部分餐點已截止或不再開放，已保留你填寫的內容。')}db.orders.push({id:uid(),unit,items,note:draftNote.trim(),kind:'新增',ts:Date.now()});save();qty={};draftNote='';lookupUnit=unit;reviewMode=false;render();alert('示範訂單已儲存到此瀏覽器（尚未跨裝置同步）。')}
+function remainingOf(o,k){
+  const removed=db.orders.filter(x=>x.kind==='取消'&&x.ref===o.id).reduce((sum,x)=>sum+Math.max(0,-Number(x.items[k]||0)),0);
+  return Math.max(0,Number(o.items[k]||0)-removed);
+}
+function lookupOrders(silent=false){
+  const target=$('lookupResult');if(!target)return;
+  const unit=lookupUnit.trim(),records=db.orders.filter(o=>o.unit===unit);
+  target.innerHTML=!unit?'<div class="muted">請先輸入名稱</div>':!records.length?'<div class="empty">沒有查到訂單</div>':
+  records.map(o=>{
+    if(o.kind!=='新增')return `<div class="bagline"><div><b>${new Date(o.ts).toLocaleString('zh-TW')}</b><div class="muted">取消紀錄（保留原單）</div></div><div>${esc(itemsText(Object.fromEntries(Object.entries(o.items).map(([k,v])=>[k,Math.abs(v)]))))}</div></div>`;
+    const lines=Object.entries(o.items).map(([k,v])=>{
+      const remain=remainingOf(o,k),d=dish(k),can=remain>0&&d&&isOpen(d.type);
+      return `<div class="dish" style="margin:7px 0;padding:10px 0"><div><b>${esc(itemName(k))}</b><div class="muted">原訂 ${v} 份／目前剩餘 ${remain} 份</div></div>${remain>0?`<button class="danger small" ${can?'':'disabled'} onclick="openCancelItem('${o.id}', '${encodeURIComponent(k)}')">取消／異動</button>`:'<span class="muted">已全部取消</span>'}</div>`;
+    }).join('');
+    return `<div class="bagline" style="display:block"><div><b>${new Date(o.ts).toLocaleString('zh-TW')}</b><div class="muted">原始訂單（保留）</div></div>${lines}${o.note?'<div class="muted">備註：'+esc(o.note)+'</div>':''}</div>`;
+  }).join('')+'<div class="muted">截止後無法取消；取消只會新增異動紀錄，不會刪除原始訂單。</div>';
+}
+function openCancelItem(oid,encodedKey){
+  const o=db.orders.find(x=>x.id===oid&&x.kind==='新增'),k=decodeURIComponent(encodedKey);
+  if(!o||!Object.hasOwn(o.items,k))return;
+  const remain=remainingOf(o,k),d=dish(k);
+  if(!remain||!d||!isOpen(d.type))return alert('訂餐已截止，無法取消此餐點。');
+  const panel=$('cancelPanel');if(panel)panel.remove();
+  const el=document.createElement('div');el.id='cancelPanel';el.className='card';
+  el.style.cssText='position:fixed;inset:auto 12px 12px;max-width:480px;margin:auto;z-index:99;box-shadow:0 10px 40px #0003';
+  el.innerHTML=`<h3>取消指定餐點</h3><p><b>${esc(itemName(k))}</b>｜目前剩餘 ${remain} 份</p><div class="field"><label>取消數量（1～${remain}）</label><input id="cancelAmount" type="number" min="1" max="${remain}" step="1" value="1"></div><div class="row" style="margin-top:12px"><button class="ghost" onclick="document.getElementById('cancelPanel').remove()">返回</button><button class="danger" onclick="confirmCancelItem('${oid}','${encodedKey}')">確認取消</button></div>`;
+  document.body.appendChild(el);
+}
+function confirmCancelItem(oid,encodedKey){
+  const o=db.orders.find(x=>x.id===oid&&x.kind==='新增'),k=decodeURIComponent(encodedKey),n=Number($('cancelAmount')?.value);
+  if(!o||!Object.hasOwn(o.items,k))return;
+  const d=dish(k),remain=remainingOf(o,k);
+  if(!d||!isOpen(d.type))return alert('訂餐已截止，無法送出取消。');
+  if(!Number.isInteger(n)||n<1||n>remain)return alert('取消數量必須介於 1 到剩餘份數之間。');
+  if(!confirm(`確定取消 ${itemName(k)} ${n} 份？原始訂單會保留。`))return;
+  db.orders.push({id:uid(),unit:o.unit,items:{[k]:-n},note:'',kind:'取消',ref:o.id,ts:Date.now()});
+  save();$('cancelPanel')?.remove();render();
+}
+function renderAdmin(){const units=effective(),s=db.session;const menuTabs=`<div class="nav" style="margin:10px 0"><button class="${section==='dashboard'?'active':''}" onclick="section='dashboard';renderAdmin()">訂單統計與分袋</button><button class="${section==='setup'?'active':''}" onclick="section='setup';renderAdmin()">今日訂餐設定</button><button class="${section==='menus'?'active':''}" onclick="section='menus';renderAdmin()">餐廳與菜單</button></div>`;$('adminView').innerHTML=`<div class="notice">🔒 <b>管理者後台預覽：</b>此版尚未實作帳號登入，正式版才會使用 Firebase Authentication。</div>${menuTabs}<div id="adminContent"></div>`;const out=$('adminContent');if(section==='dashboard'){const g=groups();let totals={};for(const u of units)for(const [k,v] of Object.entries(u.items))totals[k]=(totals[k]||0)+v;const bentoN=units.reduce((a,u)=>a+u.bentoCount,0),drinkN=units.reduce((a,u)=>a+u.count-u.bentoCount,0);out.innerHTML=`<div class="grid three"><div class="kpi">訂購單位<b>${units.length}</b></div><div class="kpi">便當總份數<b>${bentoN}</b></div><div class="kpi">飲料總杯數<b>${drinkN}</b></div></div><div class="card"><div class="row between"><h2>各單位訂購統計</h2><button class="ghost small" onclick="renderAdmin()">↻ 重新整理訂單</button></div>${units.map(u=>`<details><summary>${esc(u.unit)}　便當 ${u.bentoCount} 份／飲料 ${u.count-u.bentoCount} 杯　NT$ ${u.amount}</summary><div style="padding:10px 0">${esc(itemsText(u.items))}</div><div class="muted">原始紀錄：</div>${u.records.map(o=>`<div class="muted" style="margin:7px 0">${new Date(o.ts).toLocaleString('zh-TW')}｜${esc(o.kind)}｜${esc(itemsText(o.items))}${o.note?'｜'+esc(o.note):''}</div>`).join('')}</details>`).join('')||'<div class="empty">尚無訂單</div>'}</div><div class="card"><h2>店家訂購總表</h2>${db.restaurants.filter(r=>Object.keys(totals).some(k=>r.dishes.some(d=>d.id===k.split('::')[0])&&totals[k]>0)).map(r=>`<h3>${r.type==='bento'?'🍱':'🧋'} ${esc(r.name)}</h3><div class="tablewrap"><table><thead><tr><th>餐點</th><th>數量</th><th>小計</th></tr></thead><tbody>${Object.entries(totals).filter(([k,v])=>v>0&&r.dishes.some(d=>d.id===k.split('::')[0])).map(([k,v])=>`<tr><td>${esc(itemName(k))}</td><td>${v}</td><td>NT$ ${v*(dish(k)?.price||0)}</td></tr>`).join('')}</tbody></table></div>`).join('')||'<div class="empty">尚無資料</div>'}</div><div class="card"><div class="row between"><h2>分袋清單</h2><span class="pill ${s.finalized?'':'off'}">${s.finalized?'已確認袋號':'預覽袋號'}</span></div><p class="muted">便當決定袋號：管理者 1 號、各單位 1～3 份共用 2 號、4 份以上依序獨立分袋。飲料沿用同一單位的便當袋號；若便當被拆袋，可指定飲料跟隨哪一袋。</p>${g.bags.map(b=>`<div class="bag"><div class="bagtitle row between"><span>${b.n} 號袋</span><button class="ghost small" onclick="editBag=editBag===${b.n}?null:${b.n};renderAdmin()">✎ 異動</button></div>${b.units.map(u=>`<div class="bagline"><b>${esc(u.unit)}</b><span>${Object.entries(u.items).filter(([,q])=>q>0).map(([k,q])=>`<span class="tag">${isBento(k)?'便當':'飲料'}</span> ${esc(itemName(k))} × ${q}`).join('<br>')}</span></div>`).join('')}${editBag===b.n?bagEditor(b.n,g):''}</div>`).join('')||'<div class="empty">尚無分袋資料</div>'}${g.unassigned.length?`<div class="notice warn"><b>僅飲料／未分袋</b>（由管理者指定袋號）</div>${g.unassigned.map(u=>`<div class="bagline"><b>${esc(u.unit)}</b><span>${esc(itemsText(u.items))}<div class="row" style="margin-top:8px"><input style="max-width:120px" type="number" min="1" id="assign_${encodeURIComponent(u.unit)}" placeholder="袋號"><button class="small" onclick="assignDrink('${encodeURIComponent(u.unit)}')">指定袋號</button></div></span></div>`).join('')}`:''}${g.warnings.length?`<div class="notice warn">${g.warnings.map(esc).join('；')}</div>`:''}${db.bagMoves.length?`<button class="ghost small" onclick="resetMoves()">恢復自動分袋（清除手動移袋）</button>`:''}${!s.orderingOpen&&!s.finalized?'<div style="margin-top:15px"><button onclick="finalize()">確認並固定袋號</button></div>':''}</div>`}else if(section==='setup'){out.innerHTML=`<div class="card"><h2>今日訂餐設定</h2>${sharedSetup()}${['bento','drink'].map(t=>setupType(t)).join('')}<div class="field"><label>管理者訂購名稱（1 號袋）</label><input value="${esc(s.adminLabel)}" onchange="safelySetAdmin(this.value)"></div><div class="muted">示範版以名稱區分管理者；正式版將使用管理者登入後的專用訂單標記。</div><button class="ghost small" style="margin-top:16px" onclick="resetDemo()">清除本機示範訂單</button></div><div class="card"><h2>管理者專用下單（1 號袋）</h2><div class="muted">可選擇目前開放的便當與飲料，使用管理者專用名稱送出。</div>${['bento','drink'].filter(t=>s[t+'Open']).map(t=>`<h3 style="margin-top:18px">${t==='bento'?'便當店':'飲料店'}｜${esc(current(t)?.name||'')}</h3>${(current(t)?.dishes||[]).map(d=>`<div class="dish"><div>${esc(d.name)}　<span class="muted">NT$ ${d.price}</span></div>${t==='drink'?drinkSelectors(d,true):`<div class="qty"><button onclick="adminQty['${d.id}']=Math.max(0,(adminQty['${d.id}']||0)-1);renderAdmin()">−</button><strong>${adminQty[d.id]||0}</strong><button onclick="adminQty['${d.id}']=(adminQty['${d.id}']||0)+1;renderAdmin()">＋</button></div>`}</div>`).join('')}`).join('')||'<div class="empty">尚未開放店家</div>'}<button onclick="adminOrder()">新增管理者訂單</button></div>`}else{const r=restaurant(editRid)||current('bento')||db.restaurants[0];editRid=r?.id;out.innerHTML=`<div class="card"><div class="row between"><h2>餐廳與菜單</h2><button onclick="addRestaurant()">＋ 新增店家</button></div><div class="field"><label>選擇要編輯的店家</label><select onchange="editRid=this.value;renderAdmin()">${db.restaurants.map(x=>`<option value="${x.id}" ${x.id===r?.id?'selected':''}>${esc(x.name)}（${x.type==='bento'?'便當店':'飲料店'}）</option>`).join('')}</select></div>${r?`<div class="grid"><div class="field"><label>店家名稱</label><input id="editName" value="${esc(r.name)}"></div><div class="field"><label>店家類型</label><select id="editType"><option value="bento" ${r.type==='bento'?'selected':''}>便當店</option><option value="drink" ${r.type==='drink'?'selected':''}>飲料店</option></select></div></div><button class="ghost small" onclick="saveRestaurant('${r.id}')">儲存店家設定</button><h3 style="margin-top:25px">餐點清單</h3>${r.dishes.map(d=>`<div class="dish"><div><b>${esc(d.name)}</b><div class="muted">NT$ ${d.price}</div></div><div class="row"><button class="ghost small" onclick="editDish('${r.id}','${d.id}')">編輯</button><button class="danger small" onclick="deleteDish('${r.id}','${d.id}')">刪除</button></div></div>`).join('')}<button onclick="addDish('${r.id}')">＋ 新增餐點</button>`:''}</div>`}}
+function sharedSetup(){const s=db.session;return `<div class="bag" style="padding:16px"><div class="row between"><h3 style="margin:0">統一訂餐時間</h3><label class="row"><input type="checkbox" style="width:auto" ${s.orderingOpen?'checked':''} onchange="toggleAll(this.checked)"> 開放訂餐</label></div><p class="muted">便當店與飲料店共用同一截止時間，關閉時一起停止訂購。</p><div class="grid"><div class="field"><label>截止日期</label><input type="date" id="sharedDate" value="${esc((s.sharedDeadline||'').slice(0,10))}"></div><div class="field"><label>截止時間</label><select id="sharedTime">${Array.from({length:48},(_,i)=>{const tm=String(Math.floor(i/2)).padStart(2,'0')+':'+(i%2?'30':'00');return `<option value="${tm}" ${(s.sharedDeadline||'').slice(11,16)===tm?'selected':''}>${tm}</option>`}).join('')}</select></div></div><div class="row"><span class="muted">快速設定今天：</span>${['11:00','11:30','12:00','12:30','13:00'].map(tm=>`<button class="ghost small" onclick="quickSharedDeadline('${tm}')">${tm}</button>`).join('')}</div><div class="row" style="margin-top:10px"><button class="small" onclick="saveSharedDeadline()">儲存截止時間</button><button class="ghost small" onclick="clearSharedDeadline()">不設定截止時間</button></div><div class="muted" style="margin-top:8px">${s.sharedDeadline?'目前統一截止：'+esc(new Date(s.sharedDeadline).toLocaleString('zh-TW')):'目前由管理者手動關閉'}</div></div>`}
+function setupType(t){const s=db.session,r=current(t),list=db.restaurants.filter(x=>x.type===t),name=t==='bento'?'🍱 便當店':'🧋 飲料店';return `<div class="bag" style="padding:16px"><div class="row between"><h3 style="margin:0">${name}</h3>${t==='drink'?`<label class="row"><input type="checkbox" style="width:auto" ${s.drinkEnabled?'checked':''} onchange="toggleDrink(this.checked)"> 今日提供飲料</label>`:'<span class="pill">固定提供</span>'}</div><div class="field"><label>選擇店家</label><select onchange="chooseStore('${t}',this.value)">${list.map(x=>`<option value="${x.id}" ${r?.id===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div></div>`}
+function toggleAll(checked){if(!checked&&!confirm('確定截止訂餐？便當與飲料將一起停止接受訂單。'))return renderAdmin();if(checked&&db.session.finalized)return alert('袋號已固定，請先開始新一輪訂餐');db.session.orderingOpen=checked;db.session.bentoOpen=checked;db.session.drinkOpen=checked&&db.session.drinkEnabled;save();render()}
+function toggleDrink(checked){db.session.drinkEnabled=checked;db.session.drinkOpen=db.session.orderingOpen&&checked;save();render()}
+function quickSharedDeadline(tm){$('sharedDate').value=localDate();$('sharedTime').value=tm;saveSharedDeadline()}
+function saveSharedDeadline(){const date=$('sharedDate').value,tm=$('sharedTime').value;if(!date)return alert('請選擇日期');if(new Date(date+'T'+tm).getTime()<=Date.now())return alert('截止時間必須晚於現在');db.session.sharedDeadline=date+'T'+tm;db.session.bentoDeadline=db.session.sharedDeadline;db.session.drinkDeadline=db.session.sharedDeadline;save();render()}
+function clearSharedDeadline(){db.session.sharedDeadline='';db.session.bentoDeadline='';db.session.drinkDeadline='';save();render()}
+
+function bagEditor(n,g){
+ const b=g.bags.find(x=>x.n===n);
+ const opts=b.units.flatMap(u=>Object.entries(u.items).filter(([k,q])=>q>0&&isBento(k)).map(([k,q])=>({unit:u.unit,k,q})));
+ let body='<div class="bagEditor"><h3>調整 '+n+' 號袋</h3>';
+ if(opts.length){body+='<div class="grid"><div class="field"><label>單位／便當</label><select id="moveItem">'+opts.map((o,i)=>'<option value="'+i+'">'+esc(o.unit)+'｜'+esc(dish(o.k)?.name)+'（'+o.q+' 份）</option>').join('')+'</select></div><div class="field"><label>移動份數</label><input type="number" id="moveQty" min="1" value="1"></div><div class="field"><label>移至袋號</label><select id="moveTarget">'+Array.from({length:Math.max(8,...g.bags.map(x=>x.n))+1},(_,i)=>i+1).filter(x=>x!==n).map(x=>'<option value="'+x+'">'+x+' 號袋</option>').join('')+'</select></div></div><button onclick="moveMeal('+n+')">確認便當異動</button>'}
+ else body+='<p class="muted">此袋沒有可移動的便當。</p>';
+ for(const u of b.units){const drinks=Object.fromEntries(Object.entries(u.items).filter(([k,q])=>!isBento(k)&&q>0));if(!total(drinks))continue;const code=encodeURIComponent(u.unit);body+='<div class="row" style="margin-top:14px"><b>'+esc(u.unit)+' 飲料：</b><span>'+esc(itemsText(drinks))+'</span><input type="number" min="1" style="max-width:90px" id="drinkBag_'+code+'" value="'+n+'"><button class="ghost small" onclick="assignDrink(\''+code+'\',\'drinkBag_\')">指定跟隨袋號</button></div>'}
+ return body+'<div style="margin-top:14px"><button class="ghost small" onclick="editBag=null;renderAdmin()">關閉</button></div></div>';
+}
+function moveMeal(from){const b=groups().bags.find(x=>x.n===from),opts=b.units.flatMap(u=>Object.entries(u.items).filter(([k,q])=>q>0&&isBento(k)).map(([k,q])=>({unit:u.unit,k,q})));const item=opts[Number($('moveItem').value)],n=Number($('moveQty').value),to=Number($('moveTarget').value);if(!item||!Number.isInteger(n)||n<1||n>item.q)return alert('移動份數超出目前袋內數量');if(!Number.isInteger(to)||to<1||to===from)return alert('請指定其他袋號');db.bagMoves.push({from,to,unit:item.unit,dish:item.k,qty:n});save();editBag=null;renderAdmin()}
+function assignDrink(encoded,prefix='assign_'){const unit=decodeURIComponent(encoded),n=Number($(prefix+encoded)?.value);if(!Number.isInteger(n)||n<1)return alert('請輸入正確袋號');db.drinkAssignments[unit]=n;save();renderAdmin()}
+function resetMoves(){if(!confirm('確定清除手動分袋異動？'))return;db.bagMoves=[];db.drinkAssignments={};editBag=null;save();renderAdmin()}
+function toggleStore(t,checked){if(!checked&&!confirm(`確定關閉${t==='bento'?'便當店':'飲料店'}訂購？`)){renderAdmin();return}if(checked&&db.session.finalized){alert('袋號已固定，請先開始新一輪訂餐');renderAdmin();return}db.session[t+'Open']=checked;save();render()}
+function chooseStore(t,id){if(db.orders.length&&!confirm('變更店家後，既有訂單仍會保留原店家紀錄。確定變更？')){renderAdmin();return}db.session[t+'Id']=id;save();render()}
+function localDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function quickDeadline(t,tm){$(t+'Date').value=localDate();$(t+'Time').value=tm;saveDeadline(t)}
+function saveDeadline(t){const date=$(t+'Date').value,tm=$(t+'Time').value;if(!date)return alert('請選擇日期');if(new Date(date+'T'+tm).getTime()<=Date.now())return alert('截止時間必須晚於現在');db.session[t+'Deadline']=date+'T'+tm;save();renderAdmin()}
+function clearDeadline(t){db.session[t+'Deadline']='';save();renderAdmin()}
+function safelySetAdmin(v){if(!v.trim())return alert('請輸入名稱');db.session.adminLabel=v.trim();save();render()}
+function adminOrder(){const items=Object.fromEntries(Object.entries(adminQty).filter(([,v])=>v>0));if(!total(items))return alert('請選擇餐點');for(const k of Object.keys(items)){const d=dish(k);if(!d||!isOpen(d.type)||current(d.type)?.id!==d.restaurantId)return alert('部分店家已截止或不再開放');}db.orders.push({id:uid(),unit:db.session.adminLabel,items,note:'管理者專用下單',kind:'新增',ts:Date.now()});adminQty={};save();render();alert('管理者訂單已新增（本機示範）。')}
+function finalize(){if(db.session.orderingOpen)return alert('請先關閉訂餐');if(!confirm('確認固定本次袋號？'))return;db.session.finalized=true;save();renderAdmin()}
+function resetDemo(){if(!confirm('確定清除本機示範訂單與分袋異動？'))return;db.orders=[];db.bagMoves=[];db.drinkAssignments={};db.session.finalized=false;db.session.orderingOpen=true;db.session.drinkEnabled=false;db.session.sharedDeadline='';db.session.bentoOpen=true;db.session.drinkOpen=false;db.session.bentoDeadline='';db.session.drinkDeadline='';qty={};adminQty={};save();render()}
+function addRestaurant(){const name=prompt('店家名稱');if(!name?.trim())return;const t=prompt('店家類型：輸入 1 = 便當店，2 = 飲料店','1');if(!['1','2'].includes(t))return alert('請輸入 1 或 2');const r={id:uid(),name:name.trim(),type:t==='1'?'bento':'drink',dishes:[]};db.restaurants.push(r);editRid=r.id;save();renderAdmin()}
+function saveRestaurant(rid){const r=restaurant(rid),name=$('editName').value.trim(),t=$('editType').value;if(!name)return alert('請填寫店家名稱');if(r.type!==t&&db.orders.some(o=>Object.keys(o.items).some(k=>r.dishes.some(d=>d.id===k))))return alert('此店家已有訂單，不能更改類型，以免影響分袋。');r.name=name;r.type=t;save();renderAdmin()}
+function addDish(rid){const name=prompt('餐點名稱');if(!name?.trim())return;const p=prompt('價格（元）','100');if(p===null||!Number.isFinite(+p)||+p<0)return alert('價格不正確');restaurant(rid).dishes.push({id:uid(),name:name.trim(),price:+p});save();renderAdmin()}
+function editDish(rid,did){const d=restaurant(rid).dishes.find(x=>x.id===did),name=prompt('餐點名稱',d.name);if(!name?.trim())return;const p=prompt('價格（元）',d.price);if(p===null||!Number.isFinite(+p)||+p<0)return alert('價格不正確');d.name=name.trim();d.price=+p;save();renderAdmin()}
+function deleteDish(rid,did){if(db.orders.some(o=>Object.hasOwn(o.items,did)))return alert('已有訂單紀錄，不能刪除');if(!confirm('刪除這項餐點？'))return;restaurant(rid).dishes=restaurant(rid).dishes.filter(d=>d.id!==did);save();renderAdmin()}
+render();
+</script><script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js';
+import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,signInAnonymously} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
+import {getFirestore,collection,doc,getDoc,getDocs,addDoc,updateDoc,query,where,orderBy,serverTimestamp,runTransaction,writeBatch,deleteDoc} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js';
+const config={apiKey:'AIzaSyD6lpG4KIlx7KrhOOkJDMQozi2GdESHgO4',authDomain:'lunchorder-4a540.firebaseapp.com',projectId:'lunchorder-4a540',storageBucket:'lunchorder-4a540.firebasestorage.app',messagingSenderId:'1047054056888',appId:'1:1047054056888:web:527b16610257274ff9234d',measurementId:'G-61D42Q84PT'};
+const ROOT_UID='9xTzgURSqlfmmyjoJHO69nGtaUt2',app=initializeApp(config),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:'select_account'});
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let currentUser=null,selectedShop=null,shops=[],cloudAdminAuthorized=false;
+function status(msg,error=false){$('status').className=error?'bad':'ok';$('status').textContent=msg}
+function err(e){status('操作失敗：'+(e?.code||e?.message||String(e))+'。請確認登入帳號與 Firestore 規則。',true)}
+function intVal(el){const n=Number($(el).value);if(!Number.isSafeInteger(n))throw Error('請輸入有效整數');return n}
+
+// v12: cloud ordering. Client checks improve UX; Firestore rules are authoritative.
+const cuStatus=$('cloudUserStatus'),cuIdentity=$('cloudUserIdentity');
+let cloudSession=null,cloudCatalog={},cloudCart={},cloudUnit='',cloudNote='',cloudReview=false,cloudOwn=[];
+const su=['正常糖','少糖','半糖','微糖','無糖'],ic=['正常冰','少冰','微冰','去冰'];
+const cloudKey=(shopId,itemId,sugar='',ice='')=>[shopId,itemId,sugar,ice].join('::');
+const cloudOpen=()=>cloudSession?.orderingOpen===true&&cloudSession?.finalized!==true&&cloudSession?.sharedDeadline?.toDate?.()?.getTime()>Date.now();
+function cuMessage(msg,bad=false){cuStatus.textContent=msg;cuStatus.className='notice'+(bad?' warn':'')}
+function cuError(e){cuMessage('操作失敗：'+(e?.code||e?.message||String(e)),true)}
+function cItem(k){return cloudCatalog[k]||null}
+function cAmount(items){return Object.entries(items).reduce((a,[k,n])=>a+(cItem(k)?.price||0)*n,0)}
+function cLabel(k){const x=cItem(k);if(x)return x.name+(x.sugar?'（'+x.sugar+'、'+x.ice+'）':'');const a=k.split('::');return a[1]||k}
+function cloudCartRows(){return Object.entries(cloudCart).filter(([,v])=>v>0).map(([k,n])=>`<div class="dish"><div><b>${esc(cLabel(k))}</b><div class="muted">NT$ ${cItem(k)?.price||0} × ${n}</div></div><div class="qty"><button data-cart="${esc(k)}" data-delta="-1">−</button><strong>${n}</strong><button data-cart="${esc(k)}" data-delta="1">＋</button></div></div>`).join('')}
+function cloudCartRender(){const count=Object.values(cloudCart).reduce((a,b)=>a+b,0);$('cloudOrderPanel').innerHTML=`<div class="card"><h2>${cloudReview?'確認送出訂單':'我的訂購清單'}</h2><div class="grid"><div class="field"><label>訂購單位／姓名</label><input id="cloudUnit" maxlength="80" value="${esc(cloudUnit)}" ${cloudReview?'disabled':''}></div><div class="field"><label>備註</label><input id="cloudNote" maxlength="300" value="${esc(cloudNote)}" ${cloudReview?'disabled':''}></div></div>${cloudCartRows()||'<div class="empty">尚未選擇餐點</div>'}<div class="row between"><b>合計 ${count} 件・NT$ ${cAmount(cloudCart)}</b><div class="row">${cloudReview?'<button id="cloudBack" class="ghost">返回修改</button><button id="cloudSubmit">確認送出（雲端）</button>':'<button id="cloudReview" '+(!count||!cloudOpen()?'disabled':'')+'>查看訂購清單</button>'}</div></div></div>`;
+$('cloudUnit').oninput=e=>{cloudUnit=e.target.value;};$('cloudNote').oninput=e=>cloudNote=e.target.value;
+$('cloudOrderPanel').querySelectorAll('[data-cart]').forEach(b=>b.onclick=()=>{const k=b.dataset.cart;cloudCart[k]=Math.max(0,(cloudCart[k]||0)+Number(b.dataset.delta));cloudCartRender()});
+if($('cloudReview'))$('cloudReview').onclick=()=>{if(!cloudUnit.trim())return alert('請填寫訂購單位／姓名');cloudReview=true;cloudCartRender()};
+if($('cloudBack'))$('cloudBack').onclick=()=>{cloudReview=false;cloudCartRender()};
+if($('cloudSubmit'))$('cloudSubmit').onclick=cloudSubmit;
+ const lookup=document.createElement('button');lookup.type='button';lookup.className='ghost';lookup.textContent='查詢本單位訂單';lookup.onclick=loadMyOrders;$('cloudOrderPanel').querySelector('.card').appendChild(lookup);
+}
+$('cloudAnonLogin').onclick=async()=>{try{if(auth.currentUser&&!auth.currentUser.isAnonymous){cuMessage('目前使用 Google 帳號登入。請先至管理分頁登出，再進行匿名訂餐。',true);return}if(!auth.currentUser)await signInAnonymously(auth);await loadCloudUser()}catch(e){cuError(e)}};
+$('cloudUserRefresh').onclick=loadCloudUser;
+async function loadCloudUser(){
+ const user=auth.currentUser;if(!user){cuMessage('請先按「匿名登入並讀取」。',true);return}
+ cuIdentity.textContent=user.isAnonymous?'匿名使用者 UID：'+user.uid:'Google 使用者：'+(user.email||user.uid);
+ try{
+ cuMessage('正在讀取雲端設定、菜單與訂單…');
+ const snap=await getDoc(doc(db,'sessions','current'));if(!snap.exists())throw Error('找不到 /sessions/current');
+ cloudSession=snap.data();cloudSession.id=cloudSession.roundId||'round_initial';
+ const deadline=cloudSession.sharedDeadline?.toDate?.(),open=cloudOpen();
+ $('cloudUserSession').innerHTML=`<div class="card"><div class="row between"><h2>當次訂餐設定</h2><span class="pill ${open?'':'off'}">${open?'開放訂餐':'尚未開放／已截止'}</span></div><p>統一截止時間：<b>${deadline?esc(deadline.toLocaleString('zh-TW',{timeZone:'Asia/Taipei'})):'尚未設定'}</b></p><p class="muted">飲料：${cloudSession.drinkEnabled?'有提供':'未提供'}｜訂餐輪次：${esc(cloudSession.id)}</p></div>`;
+ cloudCatalog={};let output='';
+ for(const id of [cloudSession.bentoId,...(cloudSession.drinkEnabled&&cloudSession.drinkId?[cloudSession.drinkId]:[])].filter(Boolean)){
+ const shopSnap=await getDoc(doc(db,'shops',id));if(!shopSnap.exists())continue;
+ const shop=shopSnap.data();if(shop.active!==true)continue;
+ const ms=await getDocs(collection(db,'shops',id,'menuItems'));
+ const items=ms.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.active===true).sort((a,b)=>(a.sortOrder??0)-(b.sortOrder??0));
+ output+=`<div class="card"><h2>${shop.type==='drink'?'🧋':'🍱'} ${esc(shop.name)}</h2>`;
+ for(const x of items){const k=cloudKey(id,x.id);cloudCatalog[k]={name:x.name,price:x.price,shopId:id,itemId:x.id,type:shop.type};
+ output+=`<div class="dish"><div><b>${esc(x.name)}</b><div class="money">NT$ ${esc(x.price)}</div></div><div class="row">${shop.type==='drink'?`<select data-sugar="${esc(k)}">${su.map(v=>`<option>${v}</option>`).join('')}</select><select data-ice="${esc(k)}">${ic.map(v=>`<option>${v}</option>`).join('')}</select>`:''}<button data-add="${esc(k)}" ${open?'':'disabled'}>＋ 加入</button></div></div>`;
+ }output+='</div>';
+ }
+ $('cloudUserMenus').innerHTML=output||'<div class="card empty">目前沒有供應中的店家</div>';
+ $('cloudUserMenus').querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const base=b.dataset.add,x=cloudCatalog[base];let k=base;if(x.type==='drink'){const sugar=[...$('cloudUserMenus').querySelectorAll('[data-sugar]')].find(el=>el.dataset.sugar===base).value,ice=[...$('cloudUserMenus').querySelectorAll('[data-ice]')].find(el=>el.dataset.ice===base).value;k=cloudKey(x.shopId,x.itemId,sugar,ice);cloudCatalog[k]={...x,sugar,ice}}cloudCart[k]=(cloudCart[k]||0)+1;cloudCartRender()});
+ cloudReview=false;cloudCartRender();await loadMyOrders();cuMessage('雲端資料已載入。'+(open?'目前可送出真實訂單。':'目前未開放訂餐。'));
+ }catch(e){cuError(e)}
+}
+async function cloudSubmit(){
+ if(!auth.currentUser?.isAnonymous)return alert('請使用匿名身分訂餐');if(!cloudOpen())return alert('目前已截止');
+ const unit=cloudUnit.trim(),entries=Object.entries(cloudCart).filter(([,n])=>n>0);
+ if(!unit||!entries.length)return alert('請填寫名稱並選擇餐點');
+ const items={},details={};for(const [k,n] of entries){const x=cItem(k);if(!x||!Number.isInteger(n)||n<1||n>99)return alert('數量不正確');items[k]=n;details[k]={name:x.name,price:x.price,shopId:x.shopId,itemId:x.itemId,type:x.type,sugar:x.sugar||'',ice:x.ice||''}}
+ if(!confirm('確定送出 '+entries.reduce((a,[,n])=>a+n,0)+' 件餐點到雲端？'))return;
+ const b=$('cloudSubmit');b.disabled=true;
+ try{const sid=cloudSession.id;await runTransaction(db,async tx=>{
+ const ss=await tx.get(doc(db,'sessions','current'));const now=ss.data();if(!now||now.orderingOpen!==true||now.finalized===true||(now.roundId||'round_initial')!==sid)throw Error('訂餐狀態已變更，請重新整理');
+ // The Firestore security rules perform the authoritative server-time deadline check.
+ const ref=doc(collection(db,'orders'));tx.set(ref,{ownerUid:auth.currentUser.uid,roundId:sid,unit,note:cloudNote.trim(),kind:'新增',status:'active',items,remaining:{...items},details,cancellations:[],ts:serverTimestamp()});
+ });cloudCart={};cloudNote='';cloudReview=false;await loadCloudUser();alert('雲端訂單已送出。');}
+ catch(e){cuError(e);alert('送出失敗：'+(e.code||e.message))}finally{if(b.isConnected)b.disabled=false}
+}
+async function loadMyOrders(){
+ const area=$('cloudMyOrders'),unit=cloudUnit.trim();
+ if(!auth.currentUser||!cloudSession){area.innerHTML='';return}
+ if(!unit){area.innerHTML='<div class="card"><h2>本單位訂單</h2><p class="muted">請輸入單位名稱，按「查詢本單位訂單」。</p></div>';return}
+ try{
+  const snap=await getDocs(query(collection(db,'orders'),where('roundId','==',cloudSession.id),where('unit','==',unit)));
+  cloudOwn=snap.docs.map(d=>({id:d.id,...d.data()})).filter(o=>o.kind==='新增'&&o.status==='active').sort((a,b)=>(a.ts?.seconds||0)-(b.ts?.seconds||0));
+  const merged=new Map();let audit=0;
+  for(const o of cloudOwn){audit+=(o.cancellations||[]).length;for(const [k,n] of Object.entries(o.remaining||{})){
+   const info=o.details?.[k];if(!merged.has(k))merged.set(k,{key:k,count:0,detail:info||{},source:o.id});
+   const r=merged.get(k);r.count+=Number(n)||0;if(!r.detail?.name&&info)r.detail=info;
+  }}
+  const rows=[...merged.values()].filter(x=>x.count>0);
+  const total=rows.reduce((sum,r)=>sum+r.count*Number(r.detail.price||0),0);
+  area.innerHTML=`<div class="card"><div class="row between"><h2>本單位訂單｜${esc(unit)}</h2><button id="cloudLookupAgain" class="ghost small">重新查詢</button></div><p class="muted">同單位餐點合併顯示。截止前可用 ＋／－ 調整，操作會寫入雲端並保留新增與取消紀錄。</p><p><b>目前合計 NT$ ${total}</b></p>${rows.map(r=>`<div class="dish"><div><b>${esc(r.detail.name||r.key)}</b>${r.detail.sugar?'（'+esc(r.detail.sugar)+'、'+esc(r.detail.ice)+'）':''}<div class="muted">單價 NT$ ${Number(r.detail.price||0)}・小計 NT$ ${r.count*Number(r.detail.price||0)}</div></div><div class="qty"><button data-adjust="-1" data-key="${esc(r.key)}" ${cloudOpen()?'':'disabled'}>－</button><strong>${r.count}</strong><button data-adjust="1" data-key="${esc(r.key)}" ${cloudOpen()?'':'disabled'}>＋</button></div></div>`).join('')||'<div class="empty">這個單位目前沒有有效餐點</div>'}<p class="muted">原始新增訂單 ${cloudOwn.length} 筆；取消紀錄 ${audit} 筆。已取消的餐點不計入金額。</p></div>`;
+  $('cloudLookupAgain').onclick=loadMyOrders;
+  area.querySelectorAll('[data-adjust]').forEach(b=>b.onclick=()=>cloudAdjust(b.dataset.key,Number(b.dataset.adjust)));
+ }catch(e){area.innerHTML='<div class="card"><h2>本單位訂單</h2><p class="bad">查詢失敗：'+esc(e.code||e.message)+'</p></div>';cuError(e)}
+}
+let cloudAdjustBusy=false;
+async function cloudAdjust(key,delta){
+ if(cloudAdjustBusy)return;
+ if(!auth.currentUser?.isAnonymous)return alert('請先切換為匿名訂餐身分');
+ if(!cloudOpen())return alert('訂餐已截止');
+ const unit=cloudUnit.trim();if(!unit||![1,-1].includes(delta))return;
+ const source=cloudOwn.find(o=>Number(o.remaining?.[key]||0)>0);
+ if(!source)return alert('請先重新查詢本單位訂單');
+ const detail=source.details?.[key];if(!detail)return alert('找不到原餐點資料');
+ cloudAdjustBusy=true;
+ try{
+  await runTransaction(db,async tx=>{
+   const sessionRef=doc(db,'sessions','current');const ss=await tx.get(sessionRef);const state=ss.data();
+   if(!state||state.orderingOpen!==true||state.finalized===true||(state.roundId||'round_initial')!==cloudSession.id)throw Error('訂餐狀態已變更');
+   if(delta===1){
+    const ref=doc(collection(db,'orders'));
+    tx.set(ref,{ownerUid:auth.currentUser.uid,roundId:cloudSession.id,unit,note:'',kind:'新增',status:'active',items:{[key]:1},remaining:{[key]:1},details:{[key]:detail},cancellations:[],ts:serverTimestamp()});
+   }else{
+    const ref=doc(db,'orders',source.id);const snap=await tx.get(ref),o=snap.data();
+    if(!o||o.unit!==unit||o.roundId!==cloudSession.id||!(o.remaining?.[key]>0))throw Error('訂單已變更，請重新查詢');
+    const cancellations=[...(o.cancellations||[])];if(cancellations.length>=100)throw Error('這筆訂單取消紀錄已達上限，請聯絡管理者');
+    cancellations.push({key,qty:1,at:new Date().toISOString()});
+    tx.update(ref,{remaining:{...o.remaining,[key]:o.remaining[key]-1},cancellations,updatedAt:serverTimestamp()});
+   }
+  });
+  await loadMyOrders();cuMessage(delta>0?'已追加 1 件，雲端訂單已更新。':'已減少 1 件，取消紀錄已保留。');
+ }catch(e){cuError(e);alert('調整失敗：'+(e.code||e.message))}finally{cloudAdjustBusy=false}
+}
+$('login').onclick=async()=>{try{await signInWithPopup(auth,provider)}catch(e){err(e)}};
+$('logout').onclick=async()=>{try{await signOut(auth)}catch(e){err(e)}};
+onAuthStateChanged(auth,async user=>{cuIdentity.textContent=user?(user.isAnonymous?'匿名使用者 UID：'+user.uid:'Google 使用者：'+(user.email||user.uid)):'尚未驗證身分';currentUser=user;selectedShop=null;$('login').classList.toggle('hidden',!!user);$('logout').classList.toggle('hidden',!user);$('identity').textContent=user?.email||'尚未登入';$('admin').classList.add('hidden');$('cloudOrdersAdmin').classList.add('hidden');cloudAdminAuthorized=false;$('menuArea').classList.add('hidden');if(!user){status('尚未登入。請使用系統管理員 Google 帳號登入。');$('role').textContent='';return}status('Google 登入成功，正在確認管理者權限…');try{const snap=await getDoc(doc(db,'admins',user.uid));const role=snap.exists()?snap.data():null;const authorized=!user.isAnonymous&&((user.uid===ROOT_UID)||(role?.active===true&&role?.role==='order_manager'));cloudAdminAuthorized=authorized;$('cloudOrdersAdmin').classList.toggle('hidden',!authorized);$('role').textContent='UID：'+user.uid+'｜角色：'+(user.uid===ROOT_UID?'系統管理員':role?.role||'未授權');if(!authorized){status('此帳號沒有管理權限。',true);return} $('admin').classList.remove('hidden');await loadShops();await renderCloudAdminOrders();}catch(e){err(e)}});
+async function loadShops(){try{status('正在讀取 Firestore 店家…');const snap=await getDocs(collection(db,'shops'));shops=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.sortOrder??0)-(b.sortOrder??0));$('shops').innerHTML=shops.map(s=>`<div class="store"><div class="row between"><div><b>${esc(s.name)}</b> <span class="tag">${s.type==='drink'?'飲料店':'便當店'}</span><div class="muted small">ID：${esc(s.id)}｜排序：${esc(s.sortOrder)}｜${s.active?'啟用':'停用'}</div></div><div class="row"><button class="secondary" data-action="menu" data-id="${esc(s.id)}">管理菜單</button><button class="secondary" data-action="editShop" data-id="${esc(s.id)}">編輯</button></div></div></div>`).join('')||'<div class="muted">目前沒有店家</div>';status('Firestore 連線成功，已載入 '+shops.length+' 間店家。');if(selectedShop&&shops.some(s=>s.id===selectedShop))await loadMenu(selectedShop)}catch(e){err(e)}}
+$('refresh').onclick=loadShops;
+$('shops').onclick=async e=>{const b=e.target.closest('button[data-action]');if(!b)return;const id=b.dataset.id,s=shops.find(x=>x.id===id);if(!s)return;if(b.dataset.action==='menu'){await loadMenu(id);return}const name=prompt('修改店家名稱',s.name);if(name===null)return;if(!name.trim())return alert('名稱不可空白');const sortText=prompt('排序（整數）',String(s.sortOrder??1));if(sortText===null)return;const sort=Number(sortText);if(!Number.isSafeInteger(sort))return alert('排序必須是整數');const active=confirm('是否保持店家「啟用」？\n按「確定」= 啟用，按「取消」= 停用');try{await updateDoc(doc(db,'shops',id),{name:name.trim(),sortOrder:sort,active});await loadShops()}catch(ex){err(ex)}};
+$('addShop').onsubmit=async e=>{e.preventDefault();try{const name=$('newShopName').value.trim();if(!name)return;await addDoc(collection(db,'shops'),{name,type:$('newShopType').value,sortOrder:intVal('newShopSort'),active:true});$('addShop').reset();await loadShops();status('店家新增成功（已寫入 Firestore）。')}catch(ex){err(ex)}};
+async function loadMenu(id){try{selectedShop=id;const s=shops.find(x=>x.id===id);$('menuArea').classList.remove('hidden');$('menuTitle').textContent=(s?.name||id)+'｜餐點清單';status('正在讀取菜單…');const snap=await getDocs(collection(db,'shops',id,'menuItems'));const items=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.sortOrder??0)-(b.sortOrder??0));$('menuItems').innerHTML=items.map(i=>`<div class="item row between"><div><b>${esc(i.name)}</b><div class="muted">NT$ ${esc(i.price)}｜排序 ${esc(i.sortOrder)}｜${i.active?'供應中':'停售'}</div></div><button class="secondary" data-id="${esc(i.id)}">編輯餐點</button></div>`).join('')||'<p class="muted">此店尚未建立菜單。</p>'; $('menuItems')._items=items;status('已讀取「'+(s?.name||id)+'」菜單，共 '+items.length+' 項。')}catch(e){err(e)}}
+$('menuItems').onclick=async e=>{const b=e.target.closest('button[data-id]');if(!b||!selectedShop)return;const i=($('menuItems')._items||[]).find(x=>x.id===b.dataset.id);if(!i)return;const name=prompt('修改餐點名稱',i.name);if(name===null)return;if(!name.trim())return alert('名稱不可空白');const priceText=prompt('售價（整數）',String(i.price));if(priceText===null)return;const price=Number(priceText);if(!Number.isSafeInteger(price)||price<0)return alert('價格須為非負整數');const active=confirm('是否保持餐點「供應中」？\n按「確定」= 供應，按「取消」= 停售');try{await updateDoc(doc(db,'shops',selectedShop,'menuItems',i.id),{name:name.trim(),price,active});await loadMenu(selectedShop)}catch(ex){err(ex)}};
+$('addItem').onsubmit=async e=>{e.preventDefault();if(!selectedShop)return;try{const name=$('itemName').value.trim(),price=intVal('itemPrice');if(!name||price<0)return alert('請填寫正確名稱與價格');await addDoc(collection(db,'shops',selectedShop,'menuItems'),{name,price,active:true,sortOrder:intVal('itemSort')});$('addItem').reset();await loadMenu(selectedShop);status('餐點新增成功（已寫入 Firestore）。')}catch(ex){err(ex)}};
+
+// v15: shared aggregation for unit totals, store totals, bags and settlement.
+function aggregateCloudOrders(orders){
+ const units=new Map(),stores=new Map();let bento=0,drinks=0,amount=0;
+ for(const o of orders){
+  for(const [key,raw] of Object.entries(o.remaining||{})){
+   const n=Number(raw);if(!Number.isSafeInteger(n)||n<=0)continue;
+   const d=o.details?.[key]||{};const type=d.type==='drink'?'drink':'bento';
+   const unit=String(o.unit||'').trim();if(!unit)continue;
+   if(!units.has(unit))units.set(unit,new Map());const m=units.get(unit);
+   if(!m.has(key))m.set(key,{key,unit,n:0,detail:d});
+   m.get(key).n+=n;
+   if(!m.get(key).detail.name&&d.name)m.get(key).detail=d;
+   const storeId=String(d.shopId||key.split('::')[0]||'');
+   if(!stores.has(storeId))stores.set(storeId,new Map());const st=stores.get(storeId);
+   if(!st.has(key))st.set(key,{key,n:0,detail:d});st.get(key).n+=n;
+   if(type==='drink')drinks+=n;else bento+=n;
+   amount+=n*Number(d.price||0);
+  }
+ }
+ return {units,stores,bento,drinks,amount};
+}
+function cloudMealLabel(x){const d=x.detail||{};return String(d.name||x.key)+(d.sugar?'（'+d.sugar+'、'+(d.ice||'')+'）':'')}
+function cloudBagFingerprint(units){return JSON.stringify([...units].map(([u,m])=>[u,[...m].map(([k,x])=>[k,x.n]).sort((a,b)=>a[0].localeCompare(b[0]))]).sort((a,b)=>a[0].localeCompare(b[0])))}
+function makeCloudBagPlan(units,session,rid){
+ const entries=[];let next=3;
+ for(const [unit,m] of units){
+  const meals=[...m.values()].filter(x=>x.detail.type!=='drink');
+  const count=meals.reduce((a,x)=>a+x.n,0);
+  if(!count)continue;
+  const bag=unit===(session.adminLabel||'訂餐管理員')?1:count<=3?2:next++;
+  for(const x of meals)entries.push({unit,key:x.key,bag,qty:x.n});
+ }
+ return {roundId:rid,fingerprint:cloudBagFingerprint(units),entries};
+}
+function cloudBagAllocation(plan,units){
+ const bags=new Map();
+ for(const e of plan.entries||[]){
+  if(!Number.isInteger(e.bag)||e.bag<1||!Number.isInteger(e.qty)||e.qty<=0)continue;
+  const item=units.get(e.unit)?.get(e.key);if(!item||item.detail.type==='drink')continue;
+  if(!bags.has(e.bag))bags.set(e.bag,new Map());const unitMap=bags.get(e.bag);
+  if(!unitMap.has(e.unit))unitMap.set(e.unit,[]);
+  unitMap.get(e.unit).push({...item,n:e.qty});
+ }
+ return new Map([...bags].sort((a,b)=>a[0]-b[0]));
+}
+async function renderCloudAdminOrders(){
+ if(!cloudAdminAuthorized)return;
+ try{
+  const [sessionSnap,orderSnap,shopSnap]=await Promise.all([getDoc(doc(db,'sessions','current')),getDocs(collection(db,'orders')),getDocs(collection(db,'shops'))]);
+  const session=sessionSnap.data()||{},rid=session.roundId||'round_initial';
+  const all=orderSnap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.kind==='新增');
+  const now=all.filter(x=>x.roundId===rid),past=all.filter(x=>x.roundId!==rid);
+  const {units,stores,bento,drinks,amount}=aggregateCloudOrders(now);
+  const shopNames=new Map(shopSnap.docs.map(d=>[d.id,d.data().name||d.id]));
+  const isClosed=session.orderingOpen!==true||session.finalized===true||!(session.sharedDeadline?.toDate?.()?.getTime()>Date.now());
+  const fp=cloudBagFingerprint(units),plan=session.bagPlan?.roundId===rid&&session.bagPlan?.fingerprint===fp?session.bagPlan:null;
+  const bagMap=plan?cloudBagAllocation(plan,units):new Map();
+  const unitBags=new Map();for(const [bag,group] of bagMap)for(const unit of group.keys()){
+   if(!unitBags.has(unit))unitBags.set(unit,new Set());unitBags.get(unit).add(bag);
+  }
+  const noticeLines=[...units].map(([unit,m])=>{
+   const items=[...m.values()],sum=items.reduce((a,x)=>a+x.n*Number(x.detail.price||0),0);
+   const bags=[...(unitBags.get(unit)||[])].sort((a,b)=>a-b);
+   return unit+'：'+(bags.length?'第'+bags.join('、')+'袋，':'')+'共'+sum+'元'+(bags.length?'':'（僅飲料）');
+  });
+  const noticeText='【訂餐結算通知】\n'+noticeLines.join('\n')+'\n\n請各單位依公告領取餐點，謝謝。';
+  const unitHtml=[...units].map(([unit,m])=>{
+   const items=[...m.values()],sum=items.reduce((a,x)=>a+x.n*Number(x.detail.price||0),0);
+   const bCount=items.filter(x=>x.detail.type!=='drink').reduce((a,x)=>a+x.n,0);
+   return `<details><summary>${esc(unit)}｜便當 ${bCount} 份／飲料 ${items.reduce((a,x)=>a+x.n,0)-bCount} 杯｜NT$ ${sum}</summary>${items.map(x=>`<div class="dish"><span>${esc(cloudMealLabel(x))}</span><b>× ${x.n}</b></div>`).join('')}</details>`;
+  }).join('')||'<p class="muted">本輪沒有訂單</p>';
+  const storeHtml=[...stores].map(([sid,m])=>`<div class="card" style="margin:10px 0"><h4>${esc(shopNames.get(sid)||sid)}</h4>${[...m.values()].map(x=>`<div class="dish"><span>${esc(cloudMealLabel(x))}</span><b>${x.n} ${x.detail.type==='drink'?'杯':'份'}</b></div>`).join('')}</div>`).join('')||'<p class="muted">沒有資料</p>';
+  const bagHtml=[...bagMap].map(([bag,group])=>`<div class="bag"><div class="bagtitle">${bag} 號袋</div>${[...group].map(([unit,items])=>`<div class="bagline"><b>${esc(unit)}</b><span>${items.map(x=>esc(cloudMealLabel(x))+' × '+x.n).join('、')}</span></div>`).join('')}</div>`).join('')||'<p class="muted">沒有需要分袋的便當</p>';
+  const moveOptions=plan?.entries?.filter(e=>e.qty>0)||[];
+  const moveHtml=moveOptions.length?`<div class="card" style="margin-top:12px"><h3>手動調整分袋</h3><p class="muted">可將單一便當品項的指定份數移至其他袋號，儲存後公告會使用調整結果。飲料跟隨同單位便當，不另分袋。</p><div class="grid"><div class="field"><label>要移動的便當</label><select id="cloudMoveSource">${moveOptions.map((e,i)=>`<option value="${i}">${esc(e.unit)}｜${esc(cloudMealLabel(units.get(e.unit).get(e.key)))} × ${e.qty}（第 ${e.bag} 袋）</option>`).join('')}</select></div><div class="field"><label>移動份數</label><input id="cloudMoveQty" type="number" min="1" value="1" step="1"></div><div class="field"><label>移至袋號</label><input id="cloudMoveTarget" type="number" min="1" value="3" step="1"></div></div><div class="row"><button id="cloudMoveSave">儲存分袋調整</button><button id="cloudResetBags" class="ghost">恢復自動分袋</button></div></div>`:'';
+  $('cloudOrdersAdmin').innerHTML=`<div class="card"><h2>☁ 本輪雲端訂單管理</h2><div class="notice">目前輪次：${esc(rid)}。訂餐期間僅顯示即時統計；截止後由管理者產生並確認分袋，分袋結果儲存於 Firebase。</div><div class="grid three"><div class="kpi">訂購單位<b>${units.size}</b></div><div class="kpi">便當<b>${bento}</b></div><div class="kpi">飲料<b>${drinks}</b></div></div><p><b>合計 NT$ ${amount}</b></p><div class="row"><button id="cloudRefreshOrders" class="ghost">重新整理訂單</button><button id="cloudCloseOrders" ${isClosed?'disabled':''}>提前截止訂餐</button><button id="cloudStartRound" class="ghost">開始新一輪（舊單保留）</button><button id="cloudClearHistory" class="danger">清空歷史訂單（永久刪除）</button></div><h3 style="margin-top:20px">各單位訂單</h3>${unitHtml}<h3>店家訂購總表</h3>${storeHtml}<div class="card" style="margin-top:18px"><h3>截止後分袋</h3>${!isClosed?'<p class="muted">訂餐尚未截止，分袋功能將在截止後開放。</p>':`<p class="muted">${plan?'已產生分袋結果，可手動調整。':'尚未產生分袋結果，請按下方按鈕。'} 只有飲料的單位不分袋。</p><button id="cloudGenerateBags">${plan?'重新自動分袋（覆蓋手動調整）':'產生自動分袋'}</button>${plan?bagHtml+moveHtml:''}`}</div><div class="card" style="margin-top:18px"><h3>訂餐結算公告</h3><p class="muted">${!isClosed?'訂餐截止後才能產生公告。':!plan?'請先產生分袋結果，才能產生結算公告。':'依已儲存的最終分袋結果計算，只有飲料的單位不顯示袋號。'}</p><textarea id="cloudNoticeText" rows="8" readonly style="min-height:170px" placeholder="截止並分袋後產生結算公告"></textarea><div class="row"><button id="cloudGenerateNotice" ${isClosed&&plan?'':'disabled'}>產生結算訊息</button><button id="cloudCopyNotice" class="ghost" disabled>複製訊息</button></div></div><p class="muted">歷史訂單：${past.length} 筆；沒有本輪 roundId 的測試文件不會混入統計。</p></div>`;
+  $('cloudRefreshOrders').onclick=renderCloudAdminOrders;
+  $('cloudCloseOrders').onclick=async()=>{if(!confirm('確定提前截止本輪訂餐？截止後使用者不能追加或取消。'))return;try{await updateDoc(doc(db,'sessions','current'),{orderingOpen:false});await renderCloudAdminOrders()}catch(e){err(e)}};
+  if(isClosed){
+   $('cloudGenerateBags').onclick=async()=>{if(plan&&!confirm('確定重新自動分袋？目前手動調整的袋號將被覆蓋。'))return;try{await updateDoc(doc(db,'sessions','current'),{bagPlan:makeCloudBagPlan(units,session,rid)});await renderCloudAdminOrders()}catch(e){err(e)}};
+   if(plan){
+    if($('cloudMoveSave'))$('cloudMoveSave').onclick=async()=>{
+     const source=moveOptions[Number($('cloudMoveSource').value)],qty=Number($('cloudMoveQty').value),target=Number($('cloudMoveTarget').value);
+     if(!source||!Number.isSafeInteger(qty)||qty<1||qty>source.qty||!Number.isSafeInteger(target)||target<1||target>999||target===source.bag)return alert('請確認移動份數及目標袋號（須不同於原袋號）');
+     const entries=plan.entries.map(e=>({...e}));const old=entries.find(e=>e.unit===source.unit&&e.key===source.key&&e.bag===source.bag);
+     if(!old||old.qty<qty)return alert('目前袋內數量不足');old.qty-=qty;
+     let dest=entries.find(e=>e.unit===source.unit&&e.key===source.key&&e.bag===target);
+     if(dest)dest.qty+=qty;else entries.push({unit:source.unit,key:source.key,bag:target,qty});
+     try{await updateDoc(doc(db,'sessions','current'),{bagPlan:{...plan,entries:entries.filter(e=>e.qty>0)}});await renderCloudAdminOrders()}catch(e){err(e)}
+    };
+    if($('cloudResetBags'))$('cloudResetBags').onclick=async()=>{if(!confirm('確定恢復自動分袋？'))return;try{await updateDoc(doc(db,'sessions','current'),{bagPlan:makeCloudBagPlan(units,session,rid)});await renderCloudAdminOrders()}catch(e){err(e)}};
+   }
+  }
+  $('cloudGenerateNotice').onclick=()=>{$('cloudNoticeText').value=noticeText;$('cloudCopyNotice').disabled=false};
+  $('cloudCopyNotice').onclick=async()=>{try{await navigator.clipboard.writeText($('cloudNoticeText').value);alert('已複製結算訊息')}catch(e){$('cloudNoticeText').select();alert('無法自動複製，請手動複製選取文字')}};
+  $('cloudStartRound').onclick=async()=>{if(!confirm('確定結束目前輪次並開始新一輪？舊訂單會保留，新一輪預設關閉訂餐。'))return;try{await updateDoc(doc(db,'sessions','current'),{roundId:'round_'+Date.now().toString(36),orderingOpen:false,finalized:false,bagPlan:null});await renderCloudAdminOrders();alert('新一輪已建立。請設定新的截止時間並手動開放訂餐。')}catch(e){err(e)}};
+  $('cloudClearHistory').onclick=async()=>{if(!past.length)return alert('沒有歷史訂單');if(prompt('要永久刪除 '+past.length+' 筆歷史訂單，請輸入「刪除歷史」')!=='刪除歷史')return;try{for(let i=0;i<past.length;i+=400){const batch=writeBatch(db);past.slice(i,i+400).forEach(x=>batch.delete(doc(db,'orders',x.id)));await batch.commit()}await renderCloudAdminOrders();alert('歷史訂單已刪除')}catch(e){err(e)}};
+ }catch(e){err(e)}
+}
+
+</script></body></html>
