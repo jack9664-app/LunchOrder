@@ -1,0 +1,508 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>桃機便當團</title><style>.drinkcontrols{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}.drinkprefs{display:flex;gap:7px;flex-wrap:wrap}.drinkprefs label{font-size:12px;color:#65738b}.drinkprefs select{min-width:105px;padding:7px 8px;margin-top:3px}.drinkcontrols .qty{align-self:end}@media(max-width:680px){.dish:has(.drinkcontrols){align-items:stretch;flex-direction:column}.drinkcontrols{justify-content:space-between}}
+
+:root{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;color:#233047;background:#f5f7fb}*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:11px;padding:10px 16px;background:#3459db;color:#fff;font-weight:650}button:disabled{opacity:.45;cursor:not-allowed}.ghost{background:#edf1fb;color:#3459db}.danger{background:#fff0f0;color:#bb3030}.small{padding:6px 10px;font-size:13px}.wrap{max-width:1130px;margin:auto;padding:24px 18px 70px}.top{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}.brand{font-size:27px;font-weight:800;color:#253e9d}.muted{color:#728099;font-size:13px}.nav{display:flex;gap:8px;margin:22px 0;flex-wrap:wrap}.nav button{background:white;color:#4c5c79;border:1px solid #e2e8f3}.nav button.active{background:#3459db;color:white}.card{background:#fff;border:1px solid #e7ebf4;border-radius:18px;padding:21px;margin:14px 0;box-shadow:0 6px 22px #24385808}.card h2,.card h3{margin:0 0 15px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.between{justify-content:space-between}.field{display:flex;flex-direction:column;gap:6px;margin:9px 0;flex:1;min-width:180px}.field label{font-size:13px;color:#5e6c82;font-weight:650}input,select,textarea{width:100%;border:1px solid #dbe1ed;border-radius:10px;padding:10px 12px;background:white;color:#253047}textarea{min-height:65px;resize:vertical}.pill{display:inline-block;border-radius:30px;padding:5px 10px;background:#e7f7ee;color:#147347;font-size:12px;font-weight:750}.pill.off{background:#fff0e7;color:#a95418}.dish{display:flex;justify-content:space-between;gap:12px;align-items:center;border-top:1px solid #edf0f5;padding:14px 0}.dish:first-child{border:0}.qty{display:flex;align-items:center;gap:8px}.qty button{padding:5px 11px;background:#edf1fb;color:#3459db}.qty strong{min-width:20px;text-align:center}.money{font-weight:800;color:#294ac5}.notice{padding:12px 14px;border-radius:12px;background:#eff5ff;color:#38537c;margin:12px 0}.warn{background:#fff4e7;color:#915a1d}.kpi{background:#f5f7fd;padding:16px;border-radius:13px}.kpi b{font-size:24px;display:block;margin-top:6px}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:470px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid #edf0f5;vertical-align:top}th{color:#697790;font-size:13px}details{border:1px solid #e7ebf4;border-radius:12px;margin:10px 0;padding:12px}summary{cursor:pointer;font-weight:750}.bag{border:1px solid #e0e7f5;border-radius:13px;overflow:hidden;margin:12px 0}.bagtitle{background:#edf2ff;padding:12px 14px;font-weight:800}.bagEditor{padding:16px;background:#f8faff;border-top:1px solid #e0e7f5}.bagEditor h3{margin:0 0 12px}.bagline{display:grid;grid-template-columns:minmax(100px,32%) 1fr;gap:10px;padding:12px 14px;border-top:1px solid #e8edf7}.toggle{position:relative;width:56px;height:31px;border-radius:25px;background:#c4ccdc;display:inline-block;cursor:pointer;vertical-align:middle}.toggle.on{background:#29a875}.toggle:after{content:'';position:absolute;width:23px;height:23px;left:4px;top:4px;background:white;border-radius:50%;transition:.15s}.toggle.on:after{transform:translateX(25px)}.hide{display:none!important}.empty{text-align:center;padding:30px;color:#8090a7}.footer{font-size:12px;color:#7a8496;margin-top:30px}@media(max-width:680px){.grid,.three{grid-template-columns:1fr}.wrap{padding:15px 12px 50px}.card{padding:16px}.brand{font-size:23px}}
+
+.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.tag{font-size:12px;border-radius:8px;background:#eef2fc;color:#3459db;padding:5px 8px}.disabled{opacity:.6}.bagline span{line-height:1.8}.field.compact{min-width:110px}.bagEditor select{width:100%}.kpi b{font-variant-numeric:tabular-nums}
+
+.hidden{display:none!important}#cloudView .cloud-wrap{max-width:100%;padding:0}#cloudView header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}#cloudView .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}#cloudView .between{justify-content:space-between}#cloudView .store{padding:14px;border:1px solid #dbe5f0;border-radius:12px;margin:12px 0}#cloudView .item{padding:12px 0;border-bottom:1px solid #dbe5f0}#cloudView .topgap{margin-top:18px}#cloudView .tag{font-size:12px}#cloudView .small{font-size:13px}#cloudView .bad{color:#b42318}#cloudView .ok{color:#147348}#cloudView .secondary{background:#e8eef6;color:#263a55}#cloudView button:disabled{opacity:.5}#cloudView .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}@media(max-width:650px){#cloudView .grid{grid-template-columns:1fr}}
+#adminView .cloud-wrap{padding:0;max-width:none}#adminView header{padding:0 0 10px}#adminView .cloud-wrap>h1{display:none}#adminView .card{margin:14px 0}
+#userView .card{margin:14px 0}#cloudUserMenus select{min-width:95px;width:auto}#cloudUserMenus [data-add]{white-space:nowrap}
+#cloudUserMenus .dish .qty button{padding:5px 11px;background:#edf1fb;color:#3459db}
+#adminSubnav{margin:10px 0 18px}.hide{display:none!important}
+
+.shop-category{margin:16px 0 24px}.shop-category+.shop-category{border-top:1px solid #e7ebf4;padding-top:22px}.shop-category-title{margin:0 0 12px;color:#253e9d}.shop-category .store{margin:10px 0}
+
+.drink-list-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #edf0f5;padding:14px 0}.drink-dialog{position:fixed;inset:0;background:#18243a99;z-index:1000;display:flex;align-items:center;justify-content:center;padding:12px}.drink-dialog-panel{background:white;border-radius:18px;width:min(520px,100%);max-height:92vh;overflow:auto;padding:22px;box-shadow:0 15px 50px #0003}.drink-choice{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border:1px solid #e4e9f4;border-radius:10px;margin:6px 0}.drink-choice input{width:auto}.drink-option-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.drink-option-grid label{display:flex;align-items:center;gap:6px;border:1px solid #e1e7f2;border-radius:9px;padding:9px}.drink-option-grid input{width:auto}.drink-dialog-panel h3{margin:15px 0 8px}.drink-editor{padding:14px;border:1px solid #e1e7f2;border-radius:12px;margin:12px 0}.drink-editor input[type=checkbox]{width:auto}@media(max-width:500px){.drink-dialog-panel{padding:15px}.drink-option-grid{grid-template-columns:1fr 1fr}}
+</style></head><body><main class="wrap"><div class="top"><div><div class="brand">🍱 桃機便當團</div></div><span id="statusBadge" class="pill">載入中</span></div><div class="nav"><button id="userTab" class="active" type="button">一般訂購者</button><button id="adminTab" type="button">管理者後台</button></div><section class="" id="userView"><div class="card"><h2>今日訂餐</h2><div class="row between"><div class="hide" id="cloudUserIdentity">尚未驗證身分</div><div class="row"><button class="hide" id="cloudAnonLogin">匿名登入並讀取</button><button class="ghost small" id="cloudUserRefresh">↻ 重新整理</button></div></div><div class="muted" id="cloudUserStatus">按「匿名登入並讀取」開始測試。</div></div><div id="cloudUserSession"></div><div id="cloudUserMenus"></div><div id="drinkCustomizer" class="hide"></div><div id="cloudOrderPanel"></div><div id="cloudMyOrders"></div></section><section class="hide" id="adminView"><div class="cloud-wrap"><header><div><div class="muted">管理者登入</div></div><div class="row"><span class="muted" id="identity">尚未登入</span><button id="login">使用 Google 登入</button><button class="secondary hidden" id="logout">登出</button></div></header><div class="nav hide" id="adminSubnav" style="margin:10px 0"><button data-admin-section="dashboard" type="button">訂單統計與分袋</button><button data-admin-section="setup" type="button">今日訂餐設定</button><button data-admin-section="menus" type="button">餐廳與菜單</button></div><div class="card"><h2>連線狀態</h2><div id="status" role="status">正在連線…</div><div class="muted topgap" id="role"></div></div><main class="hidden" id="admin"><div class="card"><div class="row between"><h2>店家清單</h2><button class="secondary" id="refresh">↻ 重新讀取</button></div><div id="shops"></div></div><div class="card"><h2>新增店家</h2><form class="grid" id="addShop"><div><label for="newShopName">店家名稱</label><input id="newShopName" maxlength="100" placeholder="例如：第二家便當店" required=""/></div><div><label for="newShopType">店家類型</label><select id="newShopType"><option value="bento">便當店</option><option value="drink">飲料店</option></select></div><div><label for="newShopSort">排序</label><input id="newShopSort" required="" step="1" type="number" value="2"/></div><div style="align-self:end"><button type="submit">＋ 新增店家</button></div></form></div><div class="card"><h2>菜單管理</h2><div class="muted">先從上方店家清單選擇「管理菜單」，即可讀取、修改或新增該店餐點。</div><div class="hidden" id="menuArea"><div class="topgap"><b id="menuTitle"></b></div><div id="drinkShopSettings" class="hidden"></div><div id="menuItems"></div><h2 class="topgap">新增餐點</h2><form class="grid" id="addItem"><div><label for="itemName">餐點名稱</label><input id="itemName" maxlength="100" required=""/></div><div><label for="itemPrice">售價（元）</label><input id="itemPrice" min="0" required="" step="1" type="number"/></div><div id="drinkSizePrices" class="hidden" style="grid-column:1/-1"><div class="grid"><div><label for="itemPriceM">M 杯售價（元）</label><input id="itemPriceM" type="number" min="0" step="1" placeholder="預設同餐點售價"></div><div><label for="itemPriceL">L 杯售價（元）</label><input id="itemPriceL" type="number" min="0" step="1" placeholder="預設同餐點售價"></div></div></div><div style="align-self:end"><button type="submit">＋ 新增餐點</button></div></form></div></div></main><div class="hidden" id="cloudOrdersAdmin"></div><p class="muted">僅授權管理者可以修改訂餐設定及店家菜單。</p></div></section><div class="footer">桃機便當團・團體訂餐系統</div></main><script>
+let mainTab='user',adminSection='dashboard';
+function switchTab(t){mainTab=t;document.getElementById('userView').classList.toggle('hide',t!=='user');document.getElementById('adminView').classList.toggle('hide',t!=='admin');document.getElementById('userTab').classList.toggle('active',t==='user');document.getElementById('adminTab').classList.toggle('active',t==='admin');}
+
+</script><script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js';
+import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,signInAnonymously} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js';
+import {getFirestore,collection,doc,getDoc,getDocs,addDoc,updateDoc,query,where,orderBy,serverTimestamp,runTransaction,writeBatch,deleteDoc} from 'https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js';
+const config={apiKey:'AIzaSyD6lpG4KIlx7KrhOOkJDMQozi2GdESHgO4',authDomain:'lunchorder-4a540.firebaseapp.com',projectId:'lunchorder-4a540',storageBucket:'lunchorder-4a540.firebasestorage.app',messagingSenderId:'1047054056888',appId:'1:1047054056888:web:527b16610257274ff9234d',measurementId:'G-61D42Q84PT'};
+const ROOT_UID='9xTzgURSqlfmmyjoJHO69nGtaUt2',app=initializeApp(config),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:'select_account'});
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let currentUser=null,selectedShop=null,shops=[],cloudAdminAuthorized=false;
+function selectAdminSection(section){if(!cloudAdminAuthorized)return;adminSection=section;document.querySelectorAll('[data-admin-section]').forEach(x=>x.classList.toggle('active',x.dataset.adminSection===section));['dashboard','setup','menus'].forEach(k=>document.getElementById('admin_'+k).classList.toggle('hide',k!==section));}
+function status(msg,error=false){$('status').className=error?'bad':'ok';$('status').textContent=msg}
+function err(e){status('操作失敗：'+(e?.code||e?.message||String(e))+'。請確認登入帳號與 Firestore 規則。',true)}
+function intVal(el){const n=Number($(el).value);if(!Number.isSafeInteger(n))throw Error('請輸入有效整數');return n}
+
+
+// v17: Keep v9's two-tab shell and its original three manager sections.
+const cloudAdminRoot=document.querySelector('#adminView .cloud-wrap');
+const dashboard=document.createElement('div');dashboard.id='admin_dashboard';
+const setup=document.createElement('div');setup.id='admin_setup';
+const menus=document.createElement('div');menus.id='admin_menus';
+const orderArea=document.getElementById('cloudOrdersAdmin');
+const shopsArea=document.getElementById('shops');
+const addShopForm=document.getElementById('addShop');
+const menuArea=document.getElementById('menuArea');
+// Move whole original cards (not individual form controls) to preserve events.
+const shopCard=shopsArea?.closest('.card');
+const addShopCard=addShopForm?.closest('.card');
+const menuCard=menuArea?.closest('.card');
+if(orderArea)dashboard.appendChild(orderArea);const statusCard=document.getElementById('status')?.closest('.card');if(statusCard)dashboard.prepend(statusCard);
+const sessionCard=document.getElementById('cloudSessionAdmin')?.closest('.card');
+if(sessionCard)setup.appendChild(sessionCard);
+setup.innerHTML=`<div class="card"><h2>今日訂餐設定</h2><div class="notice">便當與飲料共用截止時間；修改後即時同步至 Firebase。</div><div id="v17SettingsBody">請先使用 Google 管理者登入。</div></div>`;
+async function v17LoadSettings(){
+ if(!cloudAdminAuthorized){document.getElementById('v17SettingsBody').textContent='請先使用 Google 管理者登入。';return}
+ try{
+ const ss=await getDoc(doc(db,'sessions','current'));const s=ss.data()||{};
+ const fmt=d=>{if(!d)return '';const local=new Date(d.getTime()-d.getTimezoneOffset()*60000);return local.toISOString().slice(0,16)};
+ const deadline=s.sharedDeadline?.toDate?.();
+ const list=shops.filter(x=>x.active!==false);
+ document.getElementById('v17SettingsBody').innerHTML=`<div class="field"><label>統一截止日期與時間</label><input id="v17Deadline" type="datetime-local" value="${fmt(deadline)}"></div><div class="field"><label>今日便當店</label><select id="v17Bento">${list.filter(x=>x.type==='bento').map(x=>`<option value="${esc(x.id)}" ${s.bentoId===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div><div class="field"><label><input id="v17DrinkEnabled" type="checkbox" style="width:auto" ${s.drinkEnabled?'checked':''}> 今日提供飲料</label></div><div class="field"><label>今日飲料店</label><select id="v17Drink">${list.filter(x=>x.type==='drink').map(x=>`<option value="${esc(x.id)}" ${s.drinkId===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div><div class="field"><label>管理者訂購名稱（1 號袋）</label><input id="v17AdminLabel" value="${esc(s.adminLabel||'訂餐管理員')}"></div><label class="row"><input id="v17Open" type="checkbox" style="width:auto" ${s.orderingOpen?'checked':''}> 開放訂餐</label><div class="row" style="margin-top:12px"><button id="v17SaveSettings">儲存訂餐設定</button></div>`;
+ document.getElementById('v17SaveSettings').onclick=async()=>{
+  const date=document.getElementById('v17Deadline').value;
+  if(!date)return alert('請先設定截止日期與時間');
+  const ts=new Date(date);if(!Number.isFinite(ts.getTime()))return alert('截止日期無效');
+  const isOpen=document.getElementById('v17Open').checked;
+  if(isOpen&&ts.getTime()<=Date.now())return alert('開放訂餐時，截止時間必須晚於現在');
+  const drinkEnabled=document.getElementById('v17DrinkEnabled').checked;
+  if(drinkEnabled&&!document.getElementById('v17Drink').value)return alert('請先建立飲料店');
+  try{await updateDoc(doc(db,'sessions','current'),{sharedDeadline:ts,orderingOpen:isOpen,finalized:false,bentoId:document.getElementById('v17Bento').value,drinkEnabled,drinkId:drinkEnabled?document.getElementById('v17Drink').value:'',adminLabel:document.getElementById('v17AdminLabel').value.trim()||'訂餐管理員'});alert('訂餐設定已儲存');await renderCloudAdminOrders();await v17LoadSettings()}catch(e){err(e)}
+ };
+ }catch(e){err(e)}
+}
+
+for(const c of [shopCard,addShopCard,menuCard])if(c&&c.parentElement)menus.appendChild(c);
+cloudAdminRoot.append(dashboard,setup,menus);
+document.querySelectorAll('[data-admin-section]').forEach(x=>x.addEventListener('click',()=>{selectAdminSection(x.dataset.adminSection);if(x.dataset.adminSection==='setup')v17LoadSettings()}));
+['dashboard','setup','menus'].forEach(k=>document.getElementById('admin_'+k).classList.add('hide'));
+document.getElementById('userTab').addEventListener('click',()=>switchTab('user'));
+document.getElementById('adminTab').addEventListener('click',()=>switchTab('admin'));
+// Anonymous login automatically for ordinary customers, no visible account steps.
+async function v17InitUser(){try{await auth.authStateReady();if(!auth.currentUser)await signInAnonymously(auth);if(auth.currentUser?.isAnonymous)await loadCloudUser();else cuMessage('目前是 Google 管理者登入。一般訂餐請先從管理者後台登出。',true)}catch(e){cuError(e)}}
+document.getElementById('userTab').addEventListener('click',v17InitUser);
+
+// v12: cloud ordering. Client checks improve UX; Firestore rules are authoritative.
+const cuStatus=$('cloudUserStatus'),cuIdentity=$('cloudUserIdentity');
+let cloudSession=null,cloudCatalog={},cloudCart={},cloudUnit='',cloudNote='',cloudReview=false,cloudOwn=[],cloudMenuOrder=new Map();
+const su=['正常糖','少糖','半糖','微糖','無糖'],ic=['正常冰','少冰','微冰','去冰'];
+const cloudKey=(shopId,itemId,sugar='',ice='',size='')=>size?[shopId,itemId,sugar,ice,size].join('::'):[shopId,itemId,sugar,ice].join('::');
+const cloudOpen=()=>cloudSession?.orderingOpen===true&&cloudSession?.finalized!==true&&cloudSession?.sharedDeadline?.toDate?.()?.getTime()>Date.now();
+function cuMessage(msg,bad=false){cuStatus.textContent=msg;cuStatus.className='notice'+(bad?' warn':'')}
+function cuError(e){cuMessage('操作失敗：'+(e?.code||e?.message||String(e)),true)}
+function cItem(k){return cloudCatalog[k]||null}
+function cAmount(items){return Object.entries(items).reduce((a,[k,n])=>a+(cItem(k)?.price||0)*n,0)}
+function cLabel(k){const x=cItem(k);if(x)return x.name+(x.type==='drink'?'（'+[x.size,x.sugar,x.ice,...(x.toppings||[]).map(t=>t.name)].filter(Boolean).join('、')+'）':'');const a=k.split('::');return a[1]||k}
+const defaultDrinkOptions={sizes:['M','L'],sugars:['正常糖','少糖','半糖','微糖','無糖'],ices:['正常冰','少冰','微冰','去冰'],toppings:[]};
+const drinkOptionsByShop={};
+function validDrinkOptions(raw){const r=raw||{};const list=(key,defaults)=>Array.isArray(r[key])?r[key].filter(x=>typeof x==='string'&&x.trim()).slice(0,30):defaults;return {sizes:list('sizes',defaultDrinkOptions.sizes),sugars:list('sugars',defaultDrinkOptions.sugars),ices:list('ices',defaultDrinkOptions.ices),toppings:Array.isArray(r.toppings)?r.toppings.filter(x=>x&&typeof x.name==='string'&&Number.isSafeInteger(Number(x.price))&&Number(x.price)>=0).slice(0,40):[]}}
+function allowedDrinkOptions(item,shop){const cfg=drinkOptionsByShop[shop]||validDrinkOptions();const allowed=(key)=>Array.isArray(item?.drinkAllowed?.[key])?cfg[key].filter(x=>item.drinkAllowed[key].includes(x)):cfg[key];return {...cfg,sizes:allowed('sizes'),sugars:allowed('sugars'),ices:allowed('ices'),toppings:cfg.toppings.filter(t=>!Array.isArray(item?.drinkAllowed?.toppings)||item.drinkAllowed.toppings.includes(t.name))}}
+function drinkVariantKey(base,selection){return base+'::'+encodeURIComponent(JSON.stringify([selection.size,selection.sugar,selection.ice,selection.toppings.map(x=>x.name).sort()]))}
+function cloudMenuSelectedKey(base){return base}
+function showDrinkCustomizer(base){
+ const x=cloudCatalog[base];if(!x||x.type!=='drink')return;
+ const opts=allowedDrinkOptions(x,x.shopId),root=$('drinkCustomizer');
+ if(!opts.sizes.length||!opts.sugars.length||!opts.ices.length){alert('這款飲料尚未設定完整的杯型、甜度與冰量，請聯絡管理者');return}
+ const sizes=opts.sizes,selectedSize=sizes.includes('L')?'L':sizes[0];
+ root.classList.remove('hide');
+ root.innerHTML=`<div class="drink-dialog"><div class="drink-dialog-panel" role="dialog" aria-modal="true" aria-label="飲料客製化"><div class="row between"><h2>${esc(x.name)}</h2><button class="ghost small" id="drinkCancel" type="button">✕ 關閉</button></div><h3>杯型</h3><div id="drinkSizes" class="drink-option-grid">${sizes.map(v=>`<label><input type="radio" name="drinkSize" value="${esc(v)}" ${v===selectedSize?'checked':''}>${esc(v)}　NT$ ${Number(x['price'+v]??x.price)}</label>`).join('')}</div><h3>甜度</h3><div id="drinkSugars" class="drink-option-grid">${opts.sugars.map((v,i)=>`<label><input type="radio" name="drinkSugar" value="${esc(v)}" ${i===0?'checked':''}>${esc(v)}</label>`).join('')}</div><h3>冰量</h3><div id="drinkIces" class="drink-option-grid">${opts.ices.map((v,i)=>`<label><input type="radio" name="drinkIce" value="${esc(v)}" ${i===0?'checked':''}>${esc(v)}</label>`).join('')}</div>${opts.toppings.length?`<h3>加料（可複選）</h3>${opts.toppings.map((t,i)=>`<label class="drink-choice"><span><input type="checkbox" data-topping="${i}"> ${esc(t.name)}</span><b>+ NT$ ${Number(t.price)}</b></label>`).join('')}`:''}<div class="row between topgap"><b id="drinkPricePreview"></b><div class="qty"><button class="ghost" id="drinkQtyMinus">－</button><strong id="drinkQty">1</strong><button class="ghost" id="drinkQtyPlus">＋</button></div></div><button id="drinkAddToCart" type="button" style="width:100%;margin-top:14px">加入訂購清單</button></div></div>`;
+ let qty=1;const selected=key=>root.querySelector('input[name="'+key+'"]:checked')?.value;
+ const calculate=()=>{const size=selected('drinkSize');const toppings=[...root.querySelectorAll('[data-topping]:checked')].map(el=>opts.toppings[Number(el.dataset.topping)]);return {size,sugar:selected('drinkSugar'),ice:selected('drinkIce'),toppings,price:Number(x['price'+size]??x.price)+toppings.reduce((a,t)=>a+Number(t.price),0)}};
+ const update=()=>{const r=calculate();$('drinkQty').textContent=qty;$('drinkPricePreview').textContent='單杯 NT$ '+r.price+'・合計 NT$ '+(r.price*qty);$('drinkAddToCart').textContent='加入訂購清單・NT$ '+(r.price*qty)};
+ $('drinkCancel').onclick=()=>root.classList.add('hide');root.querySelector('.drink-dialog').onclick=e=>{if(e.target===e.currentTarget)root.classList.add('hide')};
+ $('drinkQtyMinus').onclick=()=>{qty=Math.max(1,qty-1);update()};$('drinkQtyPlus').onclick=()=>{qty=Math.min(99,qty+1);update()};
+ root.querySelectorAll('input').forEach(el=>el.addEventListener('change',update));
+ $('drinkAddToCart').onclick=()=>{if(!cloudOpen())return alert('目前無法訂餐');const r=calculate(),key=drinkVariantKey(base,r);cloudCatalog[key]={...x,...r};cloudCart[key]=(cloudCart[key]||0)+qty;root.classList.add('hide');cloudCartRender()};update();
+}
+function cloudUpdateMenuQty(){
+ const root=$('cloudUserMenus');if(!root)return;
+ root.querySelectorAll('[data-menu-qty]').forEach(el=>{
+   const k=cloudMenuSelectedKey(el.dataset.menuQty);
+   el.textContent=String(cloudCart[k]||0);
+ });
+ root.querySelectorAll('[data-menu-minus]').forEach(b=>{
+   b.disabled=!cloudOpen()||!(cloudCart[cloudMenuSelectedKey(b.dataset.menuMinus)]>0);
+ });
+}
+function cloudCartRows(){return Object.entries(cloudCart).filter(([,v])=>v>0).map(([k,n])=>`<div class="dish"><div><b>${esc(cLabel(k))}</b><div class="muted">NT$ ${cItem(k)?.price||0} × ${n}</div></div><div class="qty"><button data-cart="${esc(k)}" data-delta="-1">−</button><strong>${n}</strong><button data-cart="${esc(k)}" data-delta="1">＋</button></div></div>`).join('')}
+function cloudCartRender(){const count=Object.values(cloudCart).reduce((a,b)=>a+b,0);$('cloudOrderPanel').innerHTML=`<div class="card"><h2>${cloudReview?'我的訂購清單':'我的訂購清單'}</h2><div class="grid"><div class="field"><label>訂購單位／姓名</label><input id="cloudUnit" maxlength="80" value="${esc(cloudUnit)}" ${cloudReview?'disabled':''}></div><div class="field"><label>備註</label><input id="cloudNote" maxlength="300" value="${esc(cloudNote)}" ${cloudReview?'disabled':''}></div></div>${cloudCartRows()||'<div class="empty">尚未選擇餐點</div>'}<div class="row between"><b>合計 ${count} 件・NT$ ${cAmount(cloudCart)}</b><div class="row"><button id="cloudSubmit" ${!count||!cloudOpen()?'disabled':''}>確認送出訂單</button></div></div></div>`;
+$('cloudUnit').oninput=e=>{cloudUnit=e.target.value;};$('cloudNote').oninput=e=>cloudNote=e.target.value;
+$('cloudOrderPanel').querySelectorAll('[data-cart]').forEach(b=>b.onclick=()=>{const k=b.dataset.cart;cloudCart[k]=Math.max(0,(cloudCart[k]||0)+Number(b.dataset.delta));cloudCartRender()});cloudUpdateMenuQty();
+if($('cloudReview'))$('cloudReview').onclick=()=>{if(!cloudUnit.trim())return alert('請填寫訂購單位／姓名');cloudReview=true;cloudCartRender()};
+if($('cloudBack'))$('cloudBack').onclick=()=>{cloudReview=false;cloudCartRender()};
+if($('cloudSubmit'))$('cloudSubmit').onclick=cloudSubmit;
+ const lookup=document.createElement('button');lookup.type='button';lookup.className='ghost';lookup.textContent='查詢本單位訂單';lookup.onclick=loadMyOrders;$('cloudOrderPanel').querySelector('.card').appendChild(lookup);
+}
+$('cloudAnonLogin').onclick=async()=>{try{if(auth.currentUser&&!auth.currentUser.isAnonymous){cuMessage('目前使用 Google 帳號登入。請先至管理分頁登出，再進行匿名訂餐。',true);return}if(!auth.currentUser)await signInAnonymously(auth);await loadCloudUser()}catch(e){cuError(e)}};
+$('cloudUserRefresh').onclick=loadCloudUser;
+async function loadCloudUser(){
+ const user=auth.currentUser;if(!user){cuMessage('請先按「匿名登入並讀取」。',true);return}
+ cuIdentity.textContent=user.isAnonymous?'訂購者：'+user.uid:'管理者：'+(user.email||user.uid);
+ try{
+ cuMessage('正在讀取訂餐資料…');
+ const snap=await getDoc(doc(db,'sessions','current'));if(!snap.exists())throw Error('找不到 /sessions/current');
+ cloudSession=snap.data();cloudSession.id=cloudSession.roundId||'round_initial';
+ const deadline=cloudSession.sharedDeadline?.toDate?.(),open=cloudOpen();
+ $('cloudUserSession').innerHTML=`<div class="card"><div class="row between"><h2>當次訂餐設定</h2><span class="pill ${open?'':'off'}">${open?'開放訂餐':'尚未開放／已截止'}</span></div><p>統一截止時間：<b>${deadline?esc(deadline.toLocaleString('zh-TW',{timeZone:'Asia/Taipei'})):'尚未設定'}</b></p></div>`;
+ cloudCatalog={};cloudMenuOrder=new Map();let output='';
+ for(const id of [cloudSession.bentoId,...(cloudSession.drinkEnabled&&cloudSession.drinkId?[cloudSession.drinkId]:[])].filter(Boolean)){
+ const shopSnap=await getDoc(doc(db,'shops',id));if(!shopSnap.exists())continue;
+ const shop=shopSnap.data();if(shop.active!==true)continue;if(shop.type==='drink')drinkOptionsByShop[id]=validDrinkOptions(shop.drinkOptions);
+ const ms=await getDocs(collection(db,'shops',id,'menuItems'));
+ const items=ms.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.active===true).sort((a,b)=>(a.sortOrder??0)-(b.sortOrder??0));
+ output+=`<div class="card"><h2>${shop.type==='drink'?'🧋':'🍱'} ${esc(shop.name)}</h2>`;
+ for(const x of items){const k=cloudKey(id,x.id);cloudMenuOrder.set(k,cloudMenuOrder.size);cloudCatalog[k]={name:x.name,price:x.price,priceM:Number.isFinite(Number(x.priceM))?Number(x.priceM):x.price,priceL:Number.isFinite(Number(x.priceL))?Number(x.priceL):x.price,shopId:id,itemId:x.id,type:shop.type,drinkAllowed:x.drinkAllowed||null};
+ output+=shop.type==='drink'?`<div class="drink-list-row"><div><b>${esc(x.name)}</b><div class="muted">NT$ ${esc(x.priceM??x.price)} 起・可選杯型、糖冰、加料</div></div><button type="button" data-drink-customize="${esc(k)}" ${open?'':'disabled'}>選擇飲料</button></div>`:`<div class="dish"><div><b>${esc(x.name)}</b><div class="money">NT$ ${esc(x.price)}</div></div><div class="row"><button class="ghost" data-menu-minus="${esc(k)}" ${open?'':'disabled'}>－</button><strong data-menu-qty="${esc(k)}" aria-live="polite" style="min-width:2ch;text-align:center;font-size:1.12em">0</strong><button data-add="${esc(k)}" ${open?'':'disabled'}>＋</button></div></div>`;
+ }output+='</div>';
+ }
+ $('cloudUserMenus').innerHTML=output||'<div class="card empty">目前沒有供應中的店家</div>';
+ $('cloudUserMenus').querySelectorAll('[data-drink-customize]').forEach(b=>b.onclick=()=>showDrinkCustomizer(b.dataset.drinkCustomize));
+ $('cloudUserMenus').querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const base=b.dataset.add,x=cloudCatalog[base],k=cloudMenuSelectedKey(base);cloudCart[k]=(cloudCart[k]||0)+1;cloudCartRender()});
+ $('cloudUserMenus').querySelectorAll('[data-menu-minus]').forEach(b=>b.onclick=()=>{const k=cloudMenuSelectedKey(b.dataset.menuMinus);cloudCart[k]=Math.max(0,(cloudCart[k]||0)-1);cloudCartRender()});
+ $('cloudUserMenus').querySelectorAll('[data-size],[data-sugar],[data-ice]').forEach(el=>el.addEventListener('change',cloudUpdateMenuQty));
+ cloudReview=false;cloudCartRender();await loadMyOrders();document.getElementById('statusBadge').textContent=open?'目前開放訂餐':'目前沒有開放訂餐';document.getElementById('statusBadge').className='pill'+(open?'':' off');cuMessage(open?'目前開放訂餐。':'目前未開放訂餐。');
+ }catch(e){cuError(e)}
+}
+async function cloudSubmit(){
+ if(!auth.currentUser?.isAnonymous)return alert('請使用匿名身分訂餐');if(!cloudOpen())return alert('目前已截止');
+ const unit=cloudUnit.trim(),entries=Object.entries(cloudCart).filter(([,n])=>n>0);
+ if(!unit||!entries.length)return alert('請填寫名稱並選擇餐點');
+ const items={},details={};for(const [k,n] of entries){const x=cItem(k);if(!x||!Number.isInteger(n)||n<1||n>99)return alert('數量不正確');items[k]=n;details[k]={name:x.name,price:x.price,shopId:x.shopId,itemId:x.itemId,type:x.type,size:x.size||'',sugar:x.sugar||'',ice:x.ice||'',toppings:x.toppings||[]}}
+ if(!confirm('確定送出 '+entries.reduce((a,[,n])=>a+n,0)+' 件餐點？'))return;
+ const b=$('cloudSubmit');b.disabled=true;
+ try{const sid=cloudSession.id;await runTransaction(db,async tx=>{
+ const ss=await tx.get(doc(db,'sessions','current'));const now=ss.data();if(!now||now.orderingOpen!==true||now.finalized===true||(now.roundId||'round_initial')!==sid)throw Error('訂餐狀態已變更，請重新整理');
+ // The Firestore security rules perform the authoritative server-time deadline check.
+ const ref=doc(collection(db,'orders'));tx.set(ref,{ownerUid:auth.currentUser.uid,roundId:sid,unit,note:cloudNote.trim(),kind:'新增',status:'active',items,remaining:{...items},details,cancellations:[],ts:serverTimestamp()});
+ });cloudCart={};cloudNote='';cloudReview=false;await loadCloudUser();alert('訂單已送出。');}
+ catch(e){cuError(e);alert('送出失敗：'+(e.code||e.message))}finally{if(b.isConnected)b.disabled=false}
+}
+async function loadMyOrders(){
+ const area=$('cloudMyOrders'),unit=cloudUnit.trim();
+ if(!auth.currentUser||!cloudSession){area.innerHTML='';return}
+ if(!unit){area.innerHTML='<div class="card"><h2>本單位訂單</h2><p class="muted">請輸入單位名稱，按「查詢本單位訂單」。</p></div>';return}
+ try{
+  const snap=await getDocs(query(collection(db,'orders'),where('roundId','==',cloudSession.id),where('unit','==',unit)));
+  cloudOwn=snap.docs.map(d=>({id:d.id,...d.data()})).filter(o=>o.kind==='新增'&&o.status==='active').sort((a,b)=>(a.ts?.seconds||0)-(b.ts?.seconds||0));
+  const merged=new Map();let audit=0;
+  for(const o of cloudOwn){audit+=(o.cancellations||[]).length;for(const [k,n] of Object.entries(o.remaining||{})){
+   const info=o.details?.[k];if(!merged.has(k))merged.set(k,{key:k,count:0,detail:info||{},source:o.id});
+   const r=merged.get(k);r.count+=Number(n)||0;if(!r.detail?.name&&info)r.detail=info;
+  }}
+  const rows=[...merged.values()].filter(x=>x.count>0).sort((a,b)=>{const base=k=>k.split('::').slice(0,2).join('::');const ai=cloudMenuOrder.get(base(a.key))??999999,bi=cloudMenuOrder.get(base(b.key))??999999;return ai-bi||a.key.localeCompare(b.key,'zh-Hant')});
+  const total=rows.reduce((sum,r)=>sum+r.count*Number(r.detail.price||0),0);
+  area.innerHTML=`<div class="card"><div class="row between"><h2>本單位訂單｜${esc(unit)}</h2><button id="cloudLookupAgain" class="ghost small">重新查詢</button></div><p class="muted">同單位餐點合併顯示。截止前可用 ＋／－ 調整，系統會保留新增與取消紀錄。</p><p><b>目前合計 NT$ ${total}</b></p>${rows.map(r=>`<div class="dish"><div><b>${esc(r.detail.name||r.key)}</b>${r.detail.sugar?'（'+(r.detail.size?esc(r.detail.size)+'、':'')+esc(r.detail.sugar)+'、'+esc(r.detail.ice)+'）':''}<div class="muted">單價 NT$ ${Number(r.detail.price||0)}・小計 NT$ ${r.count*Number(r.detail.price||0)}</div></div><div class="qty"><button data-adjust="-1" data-key="${esc(r.key)}" ${cloudOpen()?'':'disabled'}>－</button><strong>${r.count}</strong><button data-adjust="1" data-key="${esc(r.key)}" ${cloudOpen()?'':'disabled'}>＋</button></div></div>`).join('')||'<div class="empty">這個單位目前沒有有效餐點</div>'}<p class="muted">原始新增訂單 ${cloudOwn.length} 筆；取消紀錄 ${audit} 筆。已取消的餐點不計入金額。</p></div>`;
+  $('cloudLookupAgain').onclick=loadMyOrders;
+  area.querySelectorAll('[data-adjust]').forEach(b=>b.onclick=()=>cloudAdjust(b.dataset.key,Number(b.dataset.adjust)));
+ }catch(e){area.innerHTML='<div class="card"><h2>本單位訂單</h2><p class="bad">查詢失敗：'+esc(e.code||e.message)+'</p></div>';cuError(e)}
+}
+let cloudAdjustBusy=false;
+async function cloudAdjust(key,delta){
+ if(cloudAdjustBusy)return;
+ if(!auth.currentUser?.isAnonymous)return alert('請先切換為匿名訂餐身分');
+ if(!cloudOpen())return alert('訂餐已截止');
+ const unit=cloudUnit.trim();if(!unit||![1,-1].includes(delta))return;
+ const source=cloudOwn.find(o=>Number(o.remaining?.[key]||0)>0);
+ if(!source)return alert('請先重新查詢本單位訂單');
+ const detail=source.details?.[key];if(!detail)return alert('找不到原餐點資料');
+ cloudAdjustBusy=true;
+ try{
+  await runTransaction(db,async tx=>{
+   const sessionRef=doc(db,'sessions','current');const ss=await tx.get(sessionRef);const state=ss.data();
+   if(!state||state.orderingOpen!==true||state.finalized===true||(state.roundId||'round_initial')!==cloudSession.id)throw Error('訂餐狀態已變更');
+   if(delta===1){
+    const ref=doc(collection(db,'orders'));
+    tx.set(ref,{ownerUid:auth.currentUser.uid,roundId:cloudSession.id,unit,note:'',kind:'新增',status:'active',items:{[key]:1},remaining:{[key]:1},details:{[key]:detail},cancellations:[],ts:serverTimestamp()});
+   }else{
+    const ref=doc(db,'orders',source.id);const snap=await tx.get(ref),o=snap.data();
+    if(!o||o.unit!==unit||o.roundId!==cloudSession.id||!(o.remaining?.[key]>0))throw Error('訂單已變更，請重新查詢');
+    const cancellations=[...(o.cancellations||[])];if(cancellations.length>=100)throw Error('這筆訂單取消紀錄已達上限，請聯絡管理者');
+    cancellations.push({key,qty:1,at:new Date().toISOString()});
+    tx.update(ref,{remaining:{...o.remaining,[key]:o.remaining[key]-1},cancellations,updatedAt:serverTimestamp()});
+   }
+  });
+  await loadMyOrders();cuMessage(delta>0?'已追加 1 件，訂單已更新。':'已減少 1 件，取消紀錄已保留。');
+ }catch(e){cuError(e);alert('調整失敗：'+(e.code||e.message))}finally{cloudAdjustBusy=false}
+}
+$('login').onclick=async()=>{try{await signInWithPopup(auth,provider)}catch(e){err(e)}};
+$('logout').onclick=async()=>{try{await signOut(auth)}catch(e){err(e)}};
+onAuthStateChanged(auth,async user=>{cuIdentity.textContent=user?(user.isAnonymous?'訂購者：'+user.uid:'管理者：'+(user.email||user.uid)):'尚未驗證身分';currentUser=user;selectedShop=null;const googleUser=!!user&&!user.isAnonymous;$('login').classList.toggle('hidden',googleUser);$('logout').classList.toggle('hidden',!googleUser);$('identity').textContent=googleUser?(user.email||'已登入 Google 帳號'):'尚未登入';$('admin').classList.add('hidden');$('cloudOrdersAdmin').classList.add('hidden');cloudAdminAuthorized=false;document.getElementById('adminSubnav').classList.add('hide');['dashboard','setup','menus'].forEach(k=>document.getElementById('admin_'+k).classList.add('hide'));$('menuArea').classList.add('hidden');if(!user||user.isAnonymous){status('尚未登入管理者。請使用 Google 帳號登入。');$('role').textContent='';return}status('Google 登入成功，正在確認管理者權限…');try{const snap=await getDoc(doc(db,'admins',user.uid));const role=snap.exists()?snap.data():null;const authorized=!user.isAnonymous&&((user.uid===ROOT_UID)||(role?.active===true&&role?.role==='order_manager'));cloudAdminAuthorized=authorized;$('cloudOrdersAdmin').classList.toggle('hidden',!authorized);$('role').textContent='UID：'+user.uid+'｜角色：'+(user.uid===ROOT_UID?'系統管理員':role?.role||'未授權');if(!authorized){status('此帳號沒有管理權限。',true);return} document.getElementById('adminSubnav').classList.remove('hide');selectAdminSection(adminSection);$('admin').classList.remove('hidden');await loadShops();await renderCloudAdminOrders();}catch(e){err(e)}});
+async function loadShops(){try{
+ status('正在讀取 Firestore 店家…');
+ const snap=await getDocs(collection(db,'shops'));
+ shops=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.sortOrder??0)-(b.sortOrder??0));
+ const shopRow=s=>`<div class="store"><div class="row between"><div><b>${esc(s.name)}</b> <span class="tag">${s.type==='drink'?'飲料店':'便當店'}</span>${s.active?'':'<div class="muted small">目前停用</div>'}</div><div class="row"><button class="secondary" data-action="menu" data-id="${esc(s.id)}">管理菜單</button><button class="secondary" data-action="editShop" data-id="${esc(s.id)}">編輯</button><button class="danger" data-action="deleteShop" data-id="${esc(s.id)}">刪除店家</button></div></div></div>`;
+ const section=(type,title)=>{const entries=shops.filter(s=>s.type===type);return `<section class="shop-category"><h3 class="shop-category-title">${title} <span class="muted small">（${entries.length} 間）</span></h3>${entries.length?entries.map(shopRow).join(''):'<p class="muted">目前沒有此類店家</p>'}</section>`};
+ $('shops').innerHTML=section('bento','🍱 便當店')+section('drink','🧋 飲料店');
+ status('Firestore 連線成功，已載入 '+shops.length+' 間店家。');
+ if(selectedShop&&shops.some(s=>s.id===selectedShop))await loadMenu(selectedShop);
+}catch(e){err(e)}}
+$('refresh').onclick=loadShops;
+$('shops').onclick=async e=>{const b=e.target.closest('button[data-action]');if(!b)return;const id=b.dataset.id,s=shops.find(x=>x.id===id);if(!s)return;if(b.dataset.action==='menu'){await loadMenu(id);return}if(b.dataset.action==='deleteShop'){await deleteWholeShop(s,b);return}const name=prompt('修改店家名稱',s.name);if(name===null)return;if(!name.trim())return alert('名稱不可空白');const sortText=prompt('排序（整數）',String(s.sortOrder??1));if(sortText===null)return;const sort=Number(sortText);if(!Number.isSafeInteger(sort))return alert('排序必須是整數');const active=confirm('是否保持店家「啟用」？\n按「確定」= 啟用，按「取消」= 停用');try{await updateDoc(doc(db,'shops',id),{name:name.trim(),sortOrder:sort,active});await loadShops()}catch(ex){err(ex)}};
+// Delete the store and its menuItems; Firestore does not cascade-delete subcollections.
+let shopDeletionBusy=false;
+async function deleteWholeShop(shop,button){
+ if(!cloudAdminAuthorized||shopDeletionBusy)return;
+ const id=shop.id;
+ try{
+  const sessionSnap=await getDoc(doc(db,'sessions','current'));
+  const session=sessionSnap.data()||{};
+  if(session.bentoId===id||(session.drinkEnabled&&session.drinkId===id)){
+   alert('這家店目前被「今日訂餐設定」選用。請先改選其他店家並儲存設定，再刪除。');return;
+  }
+  const menuSnap=await getDocs(collection(db,'shops',id,'menuItems'));
+  const typed=prompt('永久刪除「'+shop.name+'」及其 '+menuSnap.size+' 項菜單？\n這項操作無法復原。請輸入完整店家名稱確認：');
+  if(typed!==shop.name)return;
+  if(!confirm('最後確認：永久刪除「'+shop.name+'」和全部菜單？\n既有訂單及歷史紀錄不會刪除。'))return;
+  shopDeletionBusy=true;button.disabled=true;
+  status('正在刪除「'+shop.name+'」的菜單與店家…');
+  // Commit in bounded batches, deleting the parent last.
+  for(let i=0;i<menuSnap.docs.length;i+=400){
+   const batch=writeBatch(db);
+   menuSnap.docs.slice(i,i+400).forEach(d=>batch.delete(d.ref));
+   await batch.commit();
+  }
+  await deleteDoc(doc(db,'shops',id));
+  if(selectedShop===id){selectedShop=null;$('menuArea').classList.add('hidden');}
+  await loadShops();
+  status('已永久刪除「'+shop.name+'」及其菜單。');
+ }catch(e){err(e);alert('刪除未完成，請檢查連線與權限。若部分菜單已刪除，請重新整理後重試。')}
+ finally{shopDeletionBusy=false;if(button.isConnected)button.disabled=false;}
+}
+$('addShop').onsubmit=async e=>{e.preventDefault();try{const name=$('newShopName').value.trim();if(!name)return;await addDoc(collection(db,'shops'),{name,type:$('newShopType').value,sortOrder:intVal('newShopSort'),active:true});$('addShop').reset();await loadShops();status('店家新增成功（已寫入 Firestore）。')}catch(ex){err(ex)}};
+// Sort management: keep existing menu order until the manager explicitly normalizes it.
+let menuSortBusy=false;
+async function saveMenuOrder(id,items){
+ if(menuSortBusy)return;
+ menuSortBusy=true;
+ try{
+  for(let start=0;start<items.length;start+=400){
+   const batch=writeBatch(db);
+   items.slice(start,start+400).forEach((item,j)=>batch.update(doc(db,'shops',id,'menuItems',item.id),{sortOrder:start+j+1}));
+   await batch.commit();
+  }
+  await loadMenu(id);
+ }catch(e){err(e);alert('排序儲存失敗，請重新整理後確認。')}
+ finally{menuSortBusy=false}
+}
+
+function drinkOptionText(cfg,key){return cfg[key].join('、')}
+async function renderDrinkShopSettings(shop){
+ const area=$('drinkShopSettings');area.classList.toggle('hidden',shop?.type!=='drink');if(shop?.type!=='drink')return;
+ const cfg=validDrinkOptions(shop.drinkOptions);
+ area.innerHTML=`<div class="drink-editor"><h3>🧋 ${esc(shop.name)}｜店家客製化設定</h3><p class="muted">每家店獨立設定。選項以逗號或換行分隔；配料每行「名稱,加價」，例如：珍珠,10。未設定的舊店沿用預設糖冰杯型。</p><div class="field"><label>提供杯型</label><input id="drinkCfgSizes" value="${esc(cfg.sizes.join('、'))}"></div><div class="field"><label>甜度選項</label><textarea id="drinkCfgSugars">${esc(drinkOptionText(cfg,'sugars'))}</textarea></div><div class="field"><label>冰量選項</label><textarea id="drinkCfgIces">${esc(drinkOptionText(cfg,'ices'))}</textarea></div><div class="field"><label>配料與加價（每行一項）</label><textarea id="drinkCfgToppings" style="min-height:110px">${esc(cfg.toppings.map(t=>t.name+','+t.price).join('\n'))}</textarea></div><button type="button" id="drinkCfgSave">儲存店家客製化設定</button></div>`;
+ $('drinkCfgSave').onclick=async()=>{const split=x=>x.split(/[、,，\n]+/).map(v=>v.trim()).filter(Boolean);const sizes=split($('drinkCfgSizes').value),sugars=split($('drinkCfgSugars').value),ices=split($('drinkCfgIces').value);if(!sizes.length||!sugars.length||!ices.length)return alert('杯型、甜度、冰量至少各保留一項');if(sizes.some(v=>!['M','L'].includes(v)))return alert('目前杯型售價支援 M、L，請只填 M、L');const lines=$('drinkCfgToppings').value.split(/\n/).map(x=>x.trim()).filter(Boolean),toppings=[];for(const line of lines){const m=line.match(/^(.+?)[,，、]\s*(\d+)$/);if(!m)return alert('配料格式錯誤：'+line+'。請使用「珍珠,10」');toppings.push({name:m[1].trim(),price:Number(m[2])})}if(new Set(toppings.map(t=>t.name)).size!==toppings.length)return alert('配料名稱不可重複');try{await updateDoc(doc(db,'shops',shop.id),{drinkOptions:{sizes,sugars,ices,toppings}});await loadShops();await loadMenu(shop.id);alert('飲料店設定已儲存')}catch(e){err(e)}};
+}
+async function editDrinkRestrictions(item){
+ const shop=shops.find(s=>s.id===selectedShop),cfg=validDrinkOptions(shop.drinkOptions),allowed=allowedDrinkOptions(item,selectedShop);const area=$('drinkShopSettings');
+ const wrap=document.createElement('div');wrap.className='drink-editor';wrap.innerHTML=`<h3>${esc(item.name)}｜飲品可用選項</h3><p class="muted">取消勾選即可禁止該飲品使用特定選項；未修改的飲品預設使用店家全部選項。</p>${[['sizes','杯型'],['sugars','甜度'],['ices','冰量'],['toppings','配料']].map(([key,label])=>`<h4>${label}</h4><div class="drink-option-grid">${(key==='toppings'?cfg.toppings.map(t=>t.name):cfg[key]).map(v=>`<label><input type="checkbox" data-drink-allow="${key}" value="${esc(v)}" ${(key==='toppings'?allowed.toppings.map(t=>t.name):allowed[key]).includes(v)?'checked':''}>${esc(v)}</label>`).join('')||'<span class="muted">無選項</span>'}</div>`).join('')}<div class="row topgap"><button id="drinkRestrictionSave" type="button">儲存飲品限制</button><button id="drinkRestrictionCancel" class="ghost" type="button">取消</button></div>`;
+ area.appendChild(wrap);wrap.scrollIntoView({behavior:'smooth',block:'nearest'});wrap.querySelector('#drinkRestrictionCancel').onclick=()=>wrap.remove();wrap.querySelector('#drinkRestrictionSave').onclick=async()=>{const out={};for(const key of ['sizes','sugars','ices','toppings'])out[key]=[...wrap.querySelectorAll('[data-drink-allow="'+key+'"]:checked')].map(el=>el.value);if(!out.sizes.length||!out.sugars.length||!out.ices.length)return alert('杯型、甜度、冰量至少各需一個選項');try{await updateDoc(doc(db,'shops',selectedShop,'menuItems',item.id),{drinkAllowed:out});await loadMenu(selectedShop);alert('飲品客製化限制已儲存')}catch(e){err(e)}};
+}
+async function loadMenu(id){try{
+ selectedShop=id;const s=shops.find(x=>x.id===id);
+ await renderDrinkShopSettings(s);
+ $('menuArea').classList.remove('hidden');$('drinkSizePrices').classList.toggle('hidden',s?.type!=='drink');
+ $('menuTitle').textContent=(s?.name||id)+'｜餐點清單';status('正在讀取菜單…');
+ const snap=await getDocs(collection(db,'shops',id,'menuItems'));
+ const items=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(Number(a.sortOrder)||0)-(Number(b.sortOrder)||0)||a.id.localeCompare(b.id));
+ const duplicates=new Set(items.map(i=>i.sortOrder)).size!==items.length;
+ $('menuItems').innerHTML=`<div class="row between" style="margin:12px 0"><span class="muted">使用 ▲ ▼ 調整順序，修改後自動儲存。</span><button type="button" class="ghost small" data-normalize="1">${duplicates?'整理重複排序（依目前順序編號）':'重新編號 1～'+items.length}</button></div>`+
+ (items.map((i,index)=>`<div class="item row between"><div><b>${esc(i.name)}</b><div class="muted">NT$ ${esc(i.price)}${s?.type==='drink'?'｜M '+esc(i.priceM??i.price)+' / L '+esc(i.priceL??i.price):''}｜排序 ${esc(i.sortOrder??'未設定')}｜${i.active?'供應中':'停售'}</div></div><div class="row" style="gap:5px"><button type="button" class="ghost small" data-move="-1" data-id="${esc(i.id)}" ${index===0?'disabled':''} aria-label="上移 ${esc(i.name)}">▲</button><button type="button" class="ghost small" data-move="1" data-id="${esc(i.id)}" ${index===items.length-1?'disabled':''} aria-label="下移 ${esc(i.name)}">▼</button>${s?.type==='drink'?`<button type="button" class="ghost small" data-restrict="1" data-id="${esc(i.id)}">客製化限制</button>`:''}<button type="button" class="secondary small" data-edit="1" data-id="${esc(i.id)}">編輯餐點</button></div></div>`).join('')||'<p class="muted">此店尚未建立菜單。</p>');
+ $('menuItems')._items=items;status('已讀取「'+(s?.name||id)+'」菜單，共 '+items.length+' 項。');
+ }catch(e){err(e)}}
+$('menuItems').onclick=async e=>{
+ const b=e.target.closest('button');if(!b||!selectedShop||menuSortBusy)return;
+ const items=$('menuItems')._items||[],id=selectedShop;
+ if(b.dataset.normalize){
+  if(!items.length)return;
+  if(!confirm('確定將這家店所有餐點依目前顯示順序重新編號為 1～'+items.length+'？\n只修改排序，不影響價格、餐點或訂單。'))return;
+  await saveMenuOrder(id,items);return;
+ }
+ const i=items.find(x=>x.id===b.dataset.id);if(!i)return;if(b.dataset.restrict){await editDrinkRestrictions(i);return}
+ if(b.dataset.move){
+  const from=items.findIndex(x=>x.id===i.id),to=from+Number(b.dataset.move);
+  if(to<0||to>=items.length)return;
+  const reordered=[...items];[reordered[from],reordered[to]]=[reordered[to],reordered[from]];
+  await saveMenuOrder(id,reordered);return;
+ }
+ if(!b.dataset.edit)return;
+ const name=prompt('修改餐點名稱',i.name);if(name===null)return;if(!name.trim())return alert('名稱不可空白');
+ const priceText=prompt('售價（整數）',String(i.price));if(priceText===null)return;
+ const price=Number(priceText);if(!Number.isSafeInteger(price)||price<0)return alert('價格須為非負整數');
+ const sortText=prompt('排序（整數，數字越小越前面）',String(i.sortOrder??2));if(sortText===null)return;
+ const sortOrder=Number(sortText);if(!Number.isSafeInteger(sortOrder)||sortOrder<1)return alert('排序必須是大於 0 的整數');
+ const active=confirm('是否保持餐點「供應中」？\n按「確定」= 供應，按「取消」= 停售');
+ let priceM=i.priceM??price,priceL=i.priceL??price;
+ if(shops.find(x=>x.id===id)?.type==='drink'){
+  const m=prompt('M 杯售價（元）',String(priceM));if(m===null)return;
+  const l=prompt('L 杯售價（元）',String(priceL));if(l===null)return;
+  priceM=Number(m);priceL=Number(l);
+  if(!Number.isSafeInteger(priceM)||priceM<0||!Number.isSafeInteger(priceL)||priceL<0)return alert('杯型售價須為非負整數');
+ }
+ try{await updateDoc(doc(db,'shops',id,'menuItems',i.id),{name:name.trim(),price,priceM,priceL,active,sortOrder});await loadMenu(id)}catch(ex){err(ex)}
+};
+$('addItem').onsubmit=async e=>{e.preventDefault();if(!selectedShop)return;try{const name=$('itemName').value.trim(),price=intVal('itemPrice');if(!name||price<0)return alert('請填寫正確名稱與價格');const isDrink=shops.find(x=>x.id===selectedShop)?.type==='drink';const m=$('itemPriceM').value.trim(),l=$('itemPriceL').value.trim();const priceM=isDrink&&m!==''?Number(m):price,priceL=isDrink&&l!==''?Number(l):price;if(!Number.isSafeInteger(priceM)||priceM<0||!Number.isSafeInteger(priceL)||priceL<0)return alert('杯型售價須為非負整數');const existing=$('menuItems')._items||[];const nextSort=existing.reduce((max,i)=>Math.max(max,Number(i.sortOrder)||0),0)+1;await addDoc(collection(db,'shops',selectedShop,'menuItems'),{name,price,priceM,priceL,active:true,sortOrder:nextSort});$('addItem').reset();await loadMenu(selectedShop);status('餐點新增成功（已寫入 Firestore）。')}catch(ex){err(ex)}};
+
+// v15: shared aggregation for unit totals, store totals, bags and settlement.
+function aggregateCloudOrders(orders){
+ const units=new Map(),stores=new Map();let bento=0,drinks=0,amount=0;
+ for(const o of orders){
+  for(const [key,raw] of Object.entries(o.remaining||{})){
+   const n=Number(raw);if(!Number.isSafeInteger(n)||n<=0)continue;
+   const d=o.details?.[key]||{};const type=d.type==='drink'?'drink':'bento';
+   const unit=String(o.unit||'').trim();if(!unit)continue;
+   if(!units.has(unit))units.set(unit,new Map());const m=units.get(unit);
+   if(!m.has(key))m.set(key,{key,unit,n:0,detail:d});
+   m.get(key).n+=n;
+   if(!m.get(key).detail.name&&d.name)m.get(key).detail=d;
+   const storeId=String(d.shopId||key.split('::')[0]||'');
+   if(!stores.has(storeId))stores.set(storeId,new Map());const st=stores.get(storeId);
+   if(!st.has(key))st.set(key,{key,n:0,detail:d});st.get(key).n+=n;
+   if(type==='drink')drinks+=n;else bento+=n;
+   amount+=n*Number(d.price||0);
+  }
+ }
+ return {units,stores,bento,drinks,amount};
+}
+function cloudMealLabel(x){const d=x.detail||{};return String(d.name||x.key)+(d.sugar?'（'+[d.size,d.sugar,d.ice,...(d.toppings||[]).map(t=>t.name)].filter(Boolean).join('、')+'）':'')}
+function cloudBagFingerprint(units){return JSON.stringify([...units].map(([u,m])=>[u,[...m].map(([k,x])=>[k,x.n]).sort((a,b)=>a[0].localeCompare(b[0]))]).sort((a,b)=>a[0].localeCompare(b[0])))}
+function makeCloudBagPlan(units,session,rid){
+ const entries=[];let next=3;
+ for(const [unit,m] of units){
+  const meals=[...m.values()].filter(x=>x.detail.type!=='drink');
+  const count=meals.reduce((a,x)=>a+x.n,0);
+  if(!count)continue;
+  const bag=unit===(session.adminLabel||'訂餐管理員')?1:count<=3?2:next++;
+  for(const x of meals)entries.push({unit,key:x.key,bag,qty:x.n});
+ }
+ return {roundId:rid,fingerprint:cloudBagFingerprint(units),entries};
+}
+function cloudBagAllocation(plan,units){
+ const bags=new Map();
+ for(const e of plan.entries||[]){
+  if(!Number.isInteger(e.bag)||e.bag<1||!Number.isInteger(e.qty)||e.qty<=0)continue;
+  const item=units.get(e.unit)?.get(e.key);if(!item||item.detail.type==='drink')continue;
+  if(!bags.has(e.bag))bags.set(e.bag,new Map());const unitMap=bags.get(e.bag);
+  if(!unitMap.has(e.unit))unitMap.set(e.unit,[]);
+  unitMap.get(e.unit).push({...item,n:e.qty});
+ }
+ // Drinks follow the lowest numbered bento bag of the same unit.
+ // Drink-only units remain outside the bag plan.
+ const firstBag=new Map();
+ for(const [number,group] of [...bags].sort((a,b)=>a[0]-b[0])){
+  for(const unit of group.keys())if(!firstBag.has(unit))firstBag.set(unit,number);
+ }
+ for(const [unit,items] of units){
+  const number=firstBag.get(unit);if(number===undefined)continue;
+  const bagItems=bags.get(number).get(unit);
+  for(const item of items.values())if(item.detail.type==='drink'&&item.n>0)bagItems.push({...item});
+ }
+ return new Map([...bags].sort((a,b)=>a[0]-b[0]));
+}
+// Historical rounds are retained for 72 hours after the round is ended.
+// Only rounds with an explicit endedAt marker are eligible for automatic deletion.
+const HISTORY_MS=3*24*60*60*1000;
+let historyCleanupRunning=false;
+const historyDate=ms=>new Date(ms).toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false});
+async function cleanupExpiredRounds(session,orders){
+ if(historyCleanupRunning)return false;
+ const records=Array.isArray(session.roundHistory)?session.roundHistory:[];
+ const expired=records.filter(r=>r?.id&&Number.isFinite(Number(r.endedAt))&&Number(r.endedAt)+HISTORY_MS<=Date.now()&&r.id!==(session.roundId||'round_initial'));
+ if(!expired.length)return false;
+ historyCleanupRunning=true;
+ try{
+  const ids=new Set(expired.map(r=>r.id));
+  const doomed=orders.filter(o=>ids.has(o.roundId));
+  for(let i=0;i<doomed.length;i+=400){const batch=writeBatch(db);doomed.slice(i,i+400).forEach(o=>batch.delete(doc(db,'orders',o.id)));await batch.commit()}
+  await updateDoc(doc(db,'sessions','current'),{roundHistory:records.filter(r=>!ids.has(r.id))});
+  return true;
+ }finally{historyCleanupRunning=false}
+}
+function historyPanel(past,session){
+ const records=Array.isArray(session.roundHistory)?session.roundHistory:[];
+ const groups=new Map();
+ for(const o of past){const key=o.roundId||'(舊資料未標記輪次)';if(!groups.has(key))groups.set(key,[]);groups.get(key).push(o)}
+ const options=[...groups].map(([id,orders])=>{
+  const marker=records.find(r=>r.id===id);
+  const ended=marker?.endedAt?Number(marker.endedAt):null;
+  const latest=Math.max(0,...orders.map(o=>o.ts?.toMillis?.()??(o.ts?.seconds||0)*1000));
+  return {id,orders,ended,sort:ended||latest};
+ }).filter(x=>!x.ended||x.ended+HISTORY_MS>Date.now()).sort((a,b)=>b.sort-a.sort);
+ const cards=options.map((g,i)=>{
+  const agg=aggregateCloudOrders(g.orders);
+  const lines=[...agg.units].map(([unit,items])=>{
+   const detail=[...items.values()].filter(x=>x.n>0);
+   const sum=detail.reduce((n,x)=>n+x.n*Number(x.detail.price||0),0);
+   return `<details><summary>${esc(unit)}｜${detail.reduce((n,x)=>n+x.n,0)} 件｜NT$ ${sum}</summary>${detail.map(x=>`<div class="dish"><span>${esc(cloudMealLabel(x))}</span><b>× ${x.n}</b></div>`).join('')}</details>`;
+  }).join('')||'<p class="muted">無有效餐點</p>';
+  const storeNames=new Map(shops.map(x=>[x.id,x.name]));
+  const storeLines=[...agg.stores].map(([id,items])=>`<details><summary>${esc(storeNames.get(id)||id)}</summary>${[...items.values()].map(x=>`<div class="dish"><span>${esc(cloudMealLabel(x))}</span><b>× ${x.n}</b></div>`).join('')}</details>`).join('');
+  const dateText=g.ended?`結束：${historyDate(g.ended)}｜保留至：${historyDate(g.ended+HISTORY_MS)}`:`舊版紀錄（未記錄結束時間，需手動刪除）${g.sort?'｜最後訂單：'+historyDate(g.sort):''}`;
+  return `<details class="history-round" ${i===0?'open':''}><summary>${esc(dateText)}｜${g.orders.length} 筆｜NT$ ${agg.amount}</summary><div class="muted small">輪次：${esc(g.id)}</div><p><b>單位 ${agg.units.size}｜便當 ${agg.bento} 份｜飲料 ${agg.drinks} 杯｜合計 NT$ ${agg.amount}</b></p><h4>各單位明細</h4>${lines}<h4>店家統計</h4>${storeLines}</details>`;
+ }).join('');
+ return `<div class="card" id="historyPanel"><h2>歷史訂單查詢（保留三天）</h2><p class="muted">依輪次結束時間起算 72 小時。管理者開啟後台時自動刪除到期輪次；無人登入時不會定時執行。舊版未記錄結束時間的訂單不會自動刪除。</p>${cards||'<p class="muted">目前沒有可查詢的歷史訂單。</p>'}</div>`;
+}
+async function renderCloudAdminOrders(){
+ if(!cloudAdminAuthorized)return;
+ try{
+  const [sessionSnap,orderSnap,shopSnap]=await Promise.all([getDoc(doc(db,'sessions','current')),getDocs(collection(db,'orders')),getDocs(collection(db,'shops'))]);
+  const session=sessionSnap.data()||{},rid=session.roundId||'round_initial';
+  const all=orderSnap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.kind==='新增');
+   if(await cleanupExpiredRounds(session,all)){await renderCloudAdminOrders();return}
+  const now=all.filter(x=>x.roundId===rid),past=all.filter(x=>x.roundId!==rid);
+  const {units,stores,bento,drinks,amount}=aggregateCloudOrders(now);
+  const shopNames=new Map(shopSnap.docs.map(d=>[d.id,d.data().name||d.id]));
+  const isClosed=session.orderingOpen!==true||session.finalized===true||!(session.sharedDeadline?.toDate?.()?.getTime()>Date.now());
+  const fp=cloudBagFingerprint(units),plan=session.bagPlan?.roundId===rid&&session.bagPlan?.fingerprint===fp?session.bagPlan:null;
+  const bagMap=plan?cloudBagAllocation(plan,units):new Map();
+  const unitBags=new Map();for(const [bag,group] of bagMap)for(const unit of group.keys()){
+   if(!unitBags.has(unit))unitBags.set(unit,new Set());unitBags.get(unit).add(bag);
+  }
+  const noticeLines=[...units].map(([unit,m])=>{
+   const items=[...m.values()],sum=items.reduce((a,x)=>a+x.n*Number(x.detail.price||0),0);
+   const bags=[...(unitBags.get(unit)||[])].sort((a,b)=>a-b);
+   return unit+'：'+(bags.length?'第'+bags.join('、')+'袋，':'')+'共'+sum+'元'+(bags.length?'':'（僅飲料）');
+  });
+  const noticeText='【訂餐結算通知】\n'+noticeLines.join('\n')+'\n\n請各單位依公告領取餐點，謝謝。';
+  const detailText='【各單位訂餐明細】\n\n'+[...units].map(([unit,m])=>{
+   const lines=[...m.values()].filter(x=>x.n>0).sort((a,b)=>{const ad=a.detail||{},bd=b.detail||{};const at=ad.type==='drink'?1:0,bt=bd.type==='drink'?1:0;if(at!==bt)return at-bt;const as=Number(ad.sortOrder),bs=Number(bd.sortOrder);if(Number.isFinite(as)&&Number.isFinite(bs)&&as!==bs)return as-bs;return cloudMealLabel(a).localeCompare(cloudMealLabel(b),'zh-Hant')}).map(x=>cloudMealLabel(x)+' × '+x.n);
+   return unit+'\n'+lines.join('\n');
+  }).join('\n\n');
+  const unitHtml=[...units].map(([unit,m])=>{
+   const items=[...m.values()],sum=items.reduce((a,x)=>a+x.n*Number(x.detail.price||0),0);
+   const bCount=items.filter(x=>x.detail.type!=='drink').reduce((a,x)=>a+x.n,0);
+   return `<details><summary>${esc(unit)}｜便當 ${bCount} 份／飲料 ${items.reduce((a,x)=>a+x.n,0)-bCount} 杯｜NT$ ${sum}</summary>${items.map(x=>`<div class="dish"><span>${esc(cloudMealLabel(x))}</span><b>× ${x.n}</b></div>`).join('')}</details>`;
+  }).join('')||'<p class="muted">本輪沒有訂單</p>';
+  const storeHtml=[...stores].map(([sid,m])=>`<div class="card" style="margin:10px 0"><h4>${esc(shopNames.get(sid)||sid)}</h4>${[...m.values()].map(x=>`<div class="dish"><span>${esc(cloudMealLabel(x))}</span><b>${x.n} ${x.detail.type==='drink'?'杯':'份'}</b></div>`).join('')}</div>`).join('')||'<p class="muted">沒有資料</p>';
+  const bagHtml=[...bagMap].map(([bag,group])=>`<div class="bag"><div class="bagtitle">${bag} 號袋</div>${[...group].map(([unit,items])=>`<div class="bagline"><b>${esc(unit)}</b><span>${items.map(x=>esc(cloudMealLabel(x))+' × '+x.n).join('、')}</span></div>`).join('')}</div>`).join('')||'<p class="muted">沒有需要分袋的便當</p>';
+  const moveOptions=plan?.entries?.filter(e=>e.qty>0)||[];
+  const moveHtml=moveOptions.length?`<div class="card" style="margin-top:12px"><h3>手動調整分袋</h3><p class="muted">可將單一便當品項的指定份數移至其他袋號，儲存後公告會使用調整結果。飲料跟隨同單位便當，不另分袋。</p><div class="grid"><div class="field"><label>要移動的便當</label><select id="cloudMoveSource">${moveOptions.map((e,i)=>`<option value="${i}">${esc(e.unit)}｜${esc(cloudMealLabel(units.get(e.unit).get(e.key)))} × ${e.qty}（第 ${e.bag} 袋）</option>`).join('')}</select></div><div class="field"><label>移動份數</label><input id="cloudMoveQty" type="number" min="1" value="1" step="1"></div><div class="field"><label>移至袋號</label><input id="cloudMoveTarget" type="number" min="1" value="3" step="1"></div></div><div class="row"><button id="cloudMoveSave">儲存分袋調整</button><button id="cloudResetBags" class="ghost">恢復自動分袋</button></div></div>`:'';
+  $('cloudOrdersAdmin').innerHTML=`<div class="card"><h2>本輪訂單管理</h2><div class="notice">目前輪次：${esc(rid)}。訂餐期間僅顯示即時統計；截止後由管理者產生並確認分袋，分袋結果會儲存。</div><div class="grid three"><div class="kpi">訂購單位<b>${units.size}</b></div><div class="kpi">便當<b>${bento}</b></div><div class="kpi">飲料<b>${drinks}</b></div></div><p><b>合計 NT$ ${amount}</b></p><div class="row"><button id="cloudRefreshOrders" class="ghost">重新整理訂單</button><button id="cloudCloseOrders" ${isClosed?'disabled':''}>提前截止訂餐</button><button id="cloudStartRound" class="ghost">開始新一輪（舊單保留）</button><button id="cloudClearHistory" class="danger">清空歷史訂單（永久刪除）</button></div><h3 style="margin-top:20px">各單位訂單</h3>${unitHtml}<h3>店家訂購總表</h3>${storeHtml}<div class="card" style="margin-top:18px"><h3>截止後分袋</h3>${!isClosed?'<p class="muted">訂餐尚未截止，分袋功能將在截止後開放。</p>':`<p class="muted">${plan?'已產生分袋結果，可手動調整。':'尚未產生分袋結果，請按下方按鈕。'} 只有飲料的單位不分袋。</p><button id="cloudGenerateBags">${plan?'重新自動分袋（覆蓋手動調整）':'產生自動分袋'}</button>${plan?bagHtml+moveHtml:''}`}</div><div class="card" style="margin-top:18px"><h3>訂餐結算公告</h3><p class="muted">${!isClosed?'訂餐截止後才能產生公告。':!plan?'請先產生分袋結果，才能產生結算公告。':'依已儲存的最終分袋結果計算，只有飲料的單位不顯示袋號。'}</p><textarea id="cloudNoticeText" rows="8" readonly style="min-height:170px" placeholder="截止並分袋後產生結算公告"></textarea><div class="row"><button id="cloudGenerateNotice" ${isClosed&&plan?'':'disabled'}>產生結算訊息</button><button id="cloudCopyNotice" class="ghost" disabled>複製訊息</button></div></div><div class="card" style="margin-top:18px"><h3>各單位訂餐明細</h3><p class="muted">依本輪有效訂單彙整餐點與數量，含飲料甜度及冰量；與結算公告分開複製。</p><textarea id="cloudDetailText" rows="10" readonly style="min-height:210px" placeholder="產生各單位訂餐明細"></textarea><div class="row"><button id="cloudGenerateDetail" ${isClosed?'':'disabled'}>產生明細訊息</button><button id="cloudCopyDetail" class="ghost" disabled>複製明細</button></div></div><p class="muted">歷史訂單：${past.length} 筆；沒有本輪 roundId 的測試文件不會混入統計。</p></div>${historyPanel(past,session)}`;
+  $('cloudRefreshOrders').onclick=renderCloudAdminOrders;
+  $('cloudCloseOrders').onclick=async()=>{if(!confirm('確定提前截止本輪訂餐？截止後使用者不能追加或取消。'))return;try{await updateDoc(doc(db,'sessions','current'),{orderingOpen:false});await renderCloudAdminOrders()}catch(e){err(e)}};
+  if(isClosed){
+   $('cloudGenerateBags').onclick=async()=>{if(plan&&!confirm('確定重新自動分袋？目前手動調整的袋號將被覆蓋。'))return;try{await updateDoc(doc(db,'sessions','current'),{bagPlan:makeCloudBagPlan(units,session,rid)});await renderCloudAdminOrders()}catch(e){err(e)}};
+   if(plan){
+    if($('cloudMoveSave'))$('cloudMoveSave').onclick=async()=>{
+     const source=moveOptions[Number($('cloudMoveSource').value)],qty=Number($('cloudMoveQty').value),target=Number($('cloudMoveTarget').value);
+     if(!source||!Number.isSafeInteger(qty)||qty<1||qty>source.qty||!Number.isSafeInteger(target)||target<1||target>999||target===source.bag)return alert('請確認移動份數及目標袋號（須不同於原袋號）');
+     const entries=plan.entries.map(e=>({...e}));const old=entries.find(e=>e.unit===source.unit&&e.key===source.key&&e.bag===source.bag);
+     if(!old||old.qty<qty)return alert('目前袋內數量不足');old.qty-=qty;
+     let dest=entries.find(e=>e.unit===source.unit&&e.key===source.key&&e.bag===target);
+     if(dest)dest.qty+=qty;else entries.push({unit:source.unit,key:source.key,bag:target,qty});
+     try{await updateDoc(doc(db,'sessions','current'),{bagPlan:{...plan,entries:entries.filter(e=>e.qty>0)}});await renderCloudAdminOrders()}catch(e){err(e)}
+    };
+    if($('cloudResetBags'))$('cloudResetBags').onclick=async()=>{if(!confirm('確定恢復自動分袋？'))return;try{await updateDoc(doc(db,'sessions','current'),{bagPlan:makeCloudBagPlan(units,session,rid)});await renderCloudAdminOrders()}catch(e){err(e)}};
+   }
+  }
+  $('cloudGenerateDetail').onclick=()=>{$('cloudDetailText').value=detailText;$('cloudCopyDetail').disabled=false};
+  $('cloudCopyDetail').onclick=async()=>{try{await navigator.clipboard.writeText($('cloudDetailText').value);alert('已複製訂餐明細')}catch(e){$('cloudDetailText').select();alert('無法自動複製，請手動複製選取文字')}};
+  $('cloudGenerateNotice').onclick=()=>{$('cloudNoticeText').value=noticeText;$('cloudCopyNotice').disabled=false};
+  $('cloudCopyNotice').onclick=async()=>{try{await navigator.clipboard.writeText($('cloudNoticeText').value);alert('已複製結算訊息')}catch(e){$('cloudNoticeText').select();alert('無法自動複製，請手動複製選取文字')}};
+  $('cloudStartRound').onclick=async()=>{if(!confirm('確定結束目前輪次並開始新一輪？舊訂單會保留，新一輪預設關閉訂餐。'))return;try{await updateDoc(doc(db,'sessions','current'),{roundId:'round_'+Date.now().toString(36),orderingOpen:false,finalized:false,bagPlan:null,roundHistory:[...(Array.isArray(session.roundHistory)?session.roundHistory:[]).filter(r=>r.id!==rid),{id:rid,endedAt:Date.now()}]});await renderCloudAdminOrders();alert('新一輪已建立。請設定新的截止時間並手動開放訂餐。')}catch(e){err(e)}};
+  $('cloudClearHistory').onclick=async()=>{if(!past.length)return alert('沒有歷史訂單');if(prompt('要永久刪除 '+past.length+' 筆歷史訂單，請輸入「刪除歷史」')!=='刪除歷史')return;try{for(let i=0;i<past.length;i+=400){const batch=writeBatch(db);past.slice(i,i+400).forEach(x=>batch.delete(doc(db,'orders',x.id)));await batch.commit()}await updateDoc(doc(db,'sessions','current'),{roundHistory:[]});await renderCloudAdminOrders();alert('歷史訂單已刪除')}catch(e){err(e)}};
+ }catch(e){err(e)}
+}
+
+
+$('login').classList.add('hidden');$('logout').classList.add('hidden');$('identity').textContent='正在確認登入狀態…';
+// Wait for Firebase to restore a persisted Google session before considering anonymous sign-in.
+auth.authStateReady().then(()=>{if(mainTab==='user')return v17InitUser()}).catch(cuError);
+</script></body></html>
