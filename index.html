@@ -512,7 +512,7 @@ function cloudUpdateMenuQty(){
 }
 function cloudCartRows(){return Object.entries(cloudCart).filter(([,v])=>v>0).map(([k,n])=>`<div class="dish"><div><b>${esc(cLabel(k))}</b><div class="muted">NT$ ${cItem(k)?.price||0} × ${n}</div></div><div class="qty"><button data-cart="${esc(k)}" data-delta="-1">−</button><strong>${n}</strong><button data-cart="${esc(k)}" data-delta="1">＋</button></div></div>`).join('')}
 function cloudCartRender(){const count=Object.values(cloudCart).reduce((a,b)=>a+b,0);$('cloudOrderPanel').innerHTML=`<div class="card"><h2>我的訂購清單</h2><div class="notice">截止時間前可自由修改訂單內容；即使已送出，也能在下方「本單位訂單」直接使用 ＋／－ 調整數量，或從菜單繼續加訂。新增餐點確認送出後才會計入訂單。</div><div class="grid"><div class="field"><label>訂購單位／姓名</label><input id="cloudUnit" maxlength="80" value="${esc(cloudUnit)}" ${cloudReview?'disabled':''}></div><div class="field"><label>備註</label><input id="cloudNote" maxlength="300" value="${esc(cloudNote)}" ${cloudReview?'disabled':''}></div></div>${cloudCartRows()||'<div class="empty">目前沒有待送出的新增餐點；已送出的內容請見下方「本單位訂單」。</div>'}<div class="row between"><b>合計 ${count} 件・NT$ ${cAmount(cloudCart)}</b><div class="row"><button id="cloudSubmit" ${!count||!cloudOpen()||cloudSubmitBusy?'disabled':''}>確認送出訂單</button></div></div></div>`;
-$('cloudUnit').onchange=e=>{cloudUnit=e.target.value;rememberCloudUnit();loadMyOrders()};$('cloudUnit').oninput=e=>{cloudUnit=e.target.value;rememberCloudUnit()};$('cloudNote').oninput=e=>{cloudNote=e.target.value;rememberCloudUnit()};
+$('cloudUnit').onchange=e=>{cloudUnit=e.target.value;rememberCloudUnit();loadMyOrders()};$('cloudUnit').oninput=e=>{cloudUnit=e.target.value;rememberCloudUnit();++myOrderRequest;cloudOwn=[];$('cloudMyOrders').innerHTML=''};$('cloudNote').oninput=e=>{cloudNote=e.target.value;rememberCloudUnit()};
 $('cloudOrderPanel').querySelectorAll('[data-cart]').forEach(b=>b.onclick=()=>{const k=b.dataset.cart;cloudCart[k]=Math.max(0,(cloudCart[k]||0)+Number(b.dataset.delta));cloudCartRender()});cloudUpdateMenuQty();
 if($('cloudReview'))$('cloudReview').onclick=()=>{if(!cloudUnit.trim())return alert('請填寫訂購單位／姓名');cloudReview=true;cloudCartRender()};
 if($('cloudBack'))$('cloudBack').onclick=()=>{cloudReview=false;cloudCartRender()};
@@ -617,13 +617,17 @@ async function cloudSubmit(){
  });rememberCloudUnit();cloudCart={};cloudReview=false;alert('訂單已送出，已加入下方本單位訂單。');try{await loadCloudUser()}catch(refreshError){cuError(refreshError);alert('訂單已成功儲存，但畫面重新整理失敗，請稍後重新整理網頁確認。')} }
  catch(e){cuError(e);alert('送出失敗：'+(e.code||e.message))}finally{cloudSubmitBusy=false;if(b.isConnected)b.disabled=false}
 }
+let myOrderRequest=0;
 async function loadMyOrders(){
+ const request=++myOrderRequest;
  const area=$('cloudMyOrders'),unit=cloudUnit.trim();
+ area.innerHTML='';cloudOwn=[];
  if(!auth.currentUser||!cloudSession){area.innerHTML='';return}
  if(!unit){area.innerHTML='<div class="card"><h2>本單位訂單</h2><p class="muted">請先在上方輸入單位名稱，再按「查詢本單位訂單」。</p></div>';cuMessage('請先輸入單位名稱，才能查詢已送出的訂單。',true);$('cloudUnit')?.focus();return}
  try{
   rememberCloudUnit();
   const snap=await getDocs(query(collection(db,'orders'),where('roundId','==',cloudSession.id),where('unit','==',unit)));
+  if(request!==myOrderRequest||unit!==cloudUnit.trim())return;
   cloudOwn=snap.docs.map(d=>({id:d.id,...d.data()})).filter(o=>o.kind==='新增'&&o.status==='active').sort((a,b)=>(a.ts?.seconds||0)-(b.ts?.seconds||0));
   const merged=new Map();let audit=0;
   for(const o of cloudOwn){audit+=(o.cancellations||[]).length;for(const [k,n] of Object.entries(o.remaining||{})){
@@ -635,9 +639,16 @@ async function loadMyOrders(){
   const rows=[...merged.values()].filter(x=>x.count>0).sort((a,b)=>{const base=k=>k.split('::').slice(0,2).join('::');const ai=cloudMenuOrder.get(base(a.key))??999999,bi=cloudMenuOrder.get(base(b.key))??999999;return ai-bi||a.key.localeCompare(b.key,'zh-Hant')});
   const total=rows.reduce((sum,r)=>sum+r.count*Number(r.detail.price||0),0);
   area.innerHTML=`<div class="card"><div class="row between"><h2>本單位訂單｜${esc(unit)}</h2><button id="cloudLookupAgain" class="ghost small">重新查詢</button></div><p class="notice">以下為已送出的訂單。截止時間前可以直接按 ＋／－ 修改數量，變更會立即儲存；需要新餐點請從下方菜單選擇並確認加訂。</p><p><b>目前合計 NT$ ${total}</b></p>${rows.map(r=>`<div class="dish"><div><b>${esc(r.detail.name||r.key)}</b>${r.detail.sugar?'（'+(r.detail.size?esc(r.detail.size)+'、':'')+esc(r.detail.sugar)+'、'+esc(r.detail.ice)+'）':''}<div class="muted">單價 NT$ ${Number(r.detail.price||0)}・小計 NT$ ${r.count*Number(r.detail.price||0)}</div></div><div class="qty"><button data-adjust="-1" data-key="${esc(r.key)}" ${cloudOpen()?'':'disabled'}>－</button><strong>${r.count}</strong><button data-adjust="1" data-key="${esc(r.key)}" ${cloudOpen()?'':'disabled'}>＋</button></div></div>`).join('')||'<div class="empty">這個單位目前沒有有效餐點</div>'}<p class="muted">原始新增訂單 ${cloudOwn.length} 筆；取消紀錄 ${audit} 筆。已取消的餐點不計入金額。</p></div>`;
+  area.insertAdjacentHTML('beforeend','<div class="card"><h2>本單位訂餐明細</h2><textarea id="ownDetailText" readonly rows="10" style="width:100%"></textarea><div class="row"><button id="ownGenerateDetail" class="ghost">產生明細訊息</button><button id="ownCopyDetail" class="ghost">複製明細</button></div></div>');
+  const valid=()=>request===myOrderRequest&&unit===cloudUnit.trim();
+  const generate=()=>{if(!valid())return;const lines=['【'+unit+' 訂餐明細】'];for(const [label,drink] of [['便當',false],['飲料',true]]){const items=rows.filter(r=>(r.detail.type==='drink')===drink);if(!items.length)continue;lines.push('', '【'+label+'】',...items.map(r=>cloudMealLabel(r)+' × '+r.count+'  NT$ '+r.count*Number(r.detail.price||0)) ,label+'小計 NT$ '+items.reduce((n,r)=>n+r.count*Number(r.detail.price||0),0));}lines.push('','合計 NT$ '+total);$('ownDetailText').value=lines.join('\n');};
+  $('ownGenerateDetail').disabled=!rows.length;$('ownCopyDetail').disabled=!rows.length;
+  $('ownGenerateDetail').onclick=generate;
+  $('ownCopyDetail').onclick=async()=>{if(!valid())return;generate();const t=$('ownDetailText');try{await navigator.clipboard.writeText(t.value);alert('已複製明細')}catch(e){t.focus();t.select();alert('請手動複製選取的明細')}};
+  if(rows.length)generate();
   $('cloudLookupAgain').onclick=loadMyOrders;
   area.querySelectorAll('[data-adjust]').forEach(b=>b.onclick=()=>cloudAdjust(b.dataset.key,Number(b.dataset.adjust)));
- }catch(e){area.innerHTML='<div class="card"><h2>本單位訂單</h2><p class="bad">查詢失敗：'+esc(e.code||e.message)+'</p></div>';cuError(e)}
+ }catch(e){if(request!==myOrderRequest||unit!==cloudUnit.trim())return;area.innerHTML='<div class="card"><h2>本單位訂單</h2><p class="bad">查詢失敗：'+esc(e.code||e.message)+'</p></div>';cuError(e)}
 }
 let cloudAdjustBusy=false;
 async function cloudAdjust(key,delta){
@@ -963,7 +974,8 @@ async function renderCloudAdminOrders(){
   const unitBags=new Map();for(const [bag,group] of bagMap)for(const unit of group.keys()){
    if(!unitBags.has(unit))unitBags.set(unit,new Set());unitBags.get(unit).add(bag);
   }
-  const noticeLines=[...units].map(([unit,m])=>{
+  const orderedUnits=[...units].sort(([a],[b])=>Math.min(Infinity,...(unitBags.get(a)||[]))-Math.min(Infinity,...(unitBags.get(b)||[]))||a.localeCompare(b,'zh-Hant'));
+  const noticeLines=orderedUnits.map(([unit,m])=>{
    const items=[...m.values()],sum=items.reduce((a,x)=>a+x.n*Number(x.detail.price||0),0);
    const bags=[...(unitBags.get(unit)||[])].sort((a,b)=>a-b);
    return unit+'：'+(bags.length?'第'+bags.join('、')+'袋，':'')+'共'+sum+'元'+(bags.length?'':'（僅飲料）');
@@ -990,7 +1002,7 @@ async function renderCloudAdminOrders(){
   const drinkBagHtml=drinkBagging?drinkBagRows.map((rows,i)=>`<div class="bag"><div class="bagtitle">飲料 ${i+1} 號袋（${rows.reduce((n,r)=>n+r.qty,0)} 杯）</div>${rows.map(r=>`<div class="bagline"><b>${esc(cloudMealLabel(r.item))}</b><span>× ${r.qty}</span></div>`).join('')}</div>`).join(''):'<p class="muted">本輪選擇飲料不分袋；飲料依店家總表彙整。</p>';
   const drinkBagText=drinkBagging?drinkBagRows.map((rows,i)=>'【飲料 '+(i+1)+' 號袋】\n'+rows.map(r=>cloudMealLabel(r.item)+' × '+r.qty).join('\n')).join('\n\n'):'【飲料不分袋】\n依店家訂購總表彙整';
   // Copied unit details: bento only. Drinks are a separate, cross-unit section.
-  const bentoDetailBlocks=[...units].map(([unit,m])=>{
+  const bentoDetailBlocks=orderedUnits.map(([unit,m])=>{
    const items=sortedUnitItems(m).filter(x=>x.detail.type!=='drink');
    if(!items.length)return '';
    const sum=items.reduce((total,x)=>total+x.n*Number(x.detail.price||0),0);
